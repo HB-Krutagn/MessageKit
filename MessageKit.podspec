@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
    s.ios.deployment_target = '12.0'
    s.ios.resources = 'Sources/Assets.xcassets'
 
-   --sources='git@github.com:HB-Krutagn/InputBarAccessoryView.git'
-   s.dependency 'InputBarAccessoryView', '~> 6.0.0'
+   s.dependency 'InputBarAccessoryView' --sources = 'git@github.com:HB-Krutagn/InputBarAccessoryView.git'
+
 
 end
