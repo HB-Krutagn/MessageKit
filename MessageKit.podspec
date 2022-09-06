@@ -17,7 +17,5 @@ Pod::Spec.new do |s|
    s.ios.resources = 'Sources/Assets.xcassets'
 
    s.dependency 'InputBarAccessoryView'
-   --sources = 'git@github.com:HB-Krutagn/InputBarAccessoryView.git'
-
 
 end
