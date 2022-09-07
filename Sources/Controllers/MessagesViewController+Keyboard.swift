@@ -22,7 +22,7 @@
 
 import Combine
 import Foundation
-// import InputBarAccessoryView
+import InputBarAccessoryView
 import UIKit
 
 extension MessagesViewController {
