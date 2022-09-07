@@ -17,5 +17,6 @@ Pod::Spec.new do |s|
    s.ios.resources = 'Sources/Assets.xcassets'
 
    s.dependency 'HBInputBarAccessoryView'
+   s.dependency 'SDWebImage'
 
 end
