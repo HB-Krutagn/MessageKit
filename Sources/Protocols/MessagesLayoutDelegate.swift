@@ -279,6 +279,35 @@ public protocol MessagesLayoutDelegate: AnyObject {
     for message: MessageType,
     at indexPath: IndexPath,
     in messagesCollectionView: MessagesCollectionView) -> CellSizeCalculator
+  
+      /// Document cell size calculator for messages with MessageType.document.
+    ///
+    /// - Parameters:
+    ///   - message: The document message
+    ///   - indexPath: The `IndexPath` of the cell.
+    ///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+    ///
+    /// - Note:
+    ///   The default implementation will return nil. You must override this method if you are using your own cell for messages with MessageType.contact.
+    func documentCellSizeCalculator(
+      for message: MessageType,
+      at indexPath: IndexPath,
+      in messagesCollectionView: MessagesCollectionView) -> CellSizeCalculator?
+
+    /// Reply cell size calculator for messages with MessageType.reply.
+    ///
+    /// - Parameters:
+    ///   - message: The reply message
+    ///   - indexPath: The `IndexPath` of the cell.
+    ///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+    ///
+    /// - Note:
+    ///   The default implementation will return nil. You must override this method if you are using your own cell for messages with MessageType.contact.
+    func replyCellSizeCalculator(
+      for message: MessageType,
+      at indexPath: IndexPath,
+      in messagesCollectionView: MessagesCollectionView) -> CellSizeCalculator?
+
 }
 
 extension MessagesLayoutDelegate {
@@ -409,4 +438,23 @@ extension MessagesLayoutDelegate {
   {
     fatalError("Must return a CellSizeCalculator for MessageKind.custom(Any?)")
   }
+  
+  public func documentCellSizeCalculator(
+    for _: MessageType,
+    at _: IndexPath,
+    in _: MessagesCollectionView)
+    -> CellSizeCalculator?
+  {
+    nil
+  }
+
+  public func replyCellSizeCalculator(
+    for _: MessageType,
+    at _: IndexPath,
+    in _: MessagesCollectionView)
+    -> CellSizeCalculator?
+  {
+    nil
+  }
+
 }
