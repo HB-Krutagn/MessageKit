@@ -22,7 +22,7 @@
 
 import Combine
 import Foundation
-import InputBarAccessoryView
+import HBInputBarAccessoryView
 import UIKit
 
 /// A subclass of `UIViewController` with a `MessagesCollectionView` object
