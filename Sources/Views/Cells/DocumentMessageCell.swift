@@ -88,7 +88,8 @@ open class DocumentMessageCell: MessageContentCell {
         
         errorImageView.centerInSuperview()
         errorImageView.constraint(equalTo: CGSize(width: 40, height: 40))
-        errorImageView.setRoundCorner(radius: 20)
+        errorImageView.layer.cornerRadius = 20
+//        errorImageView.setRoundCorner(radius: 20)
         errorImageView.isHidden = true
     }
 
@@ -136,7 +137,7 @@ open class DocumentMessageCell: MessageContentCell {
             fatalError("MessageKitError.nilMessagesDisplayDelegate")
         }
         
-        var status: MessageStatus = .none
+//        var status: MessageStatus = .none
         var messageBody = ""
 //        guard let objMessage = DatabaseInterface.shared.getMessagefromID(messageID: message.messageId) else {
 //            return
@@ -144,16 +145,16 @@ open class DocumentMessageCell: MessageContentCell {
 //        messageBody = objMessage.body ?? ""
 //        status = ""//CommonUtilities.statusForValue(value: objMessage.status)
         let atribitedDateString = messagesCollectionView.messagesDataSource?.messageBottomLabelAttributedText(for: message, at: indexPath)
-        if let deliveryStatusIcon = (message as? MockMessage)?.getStatusImage() {
-            timeLabel.setImageWith(text: "\(atribitedDateString?.string ?? "") ", rightIcon: deliveryStatusIcon,imageOffsetY: -2.0)
-        } else {
+//        if let deliveryStatusIcon = (message as? MockMessage)?.getStatusImage() {
+//            timeLabel.setImageWith(text: "\(atribitedDateString?.string ?? "") ", rightIcon: deliveryStatusIcon,imageOffsetY: -2.0)
+//        } else {
             timeLabel.text = atribitedDateString?.string ?? ""
-        }
+//        }
         let isCurrentUser = dataSource.isFromCurrentSender(message: message)
         let containerLeftConstraint = messageContainerView.constraints.filter { $0.identifier == "left" }.first
         let containerRightConstraint = messageContainerView.constraints.filter { $0.identifier == "right" }.first
         if  isCurrentUser {
-            groupSenderLabel.showOrHide(isHide: true)
+//            groupSenderLabel.showOrHide(isHide: true)
             containerLeftConstraint?.constant = 5
             containerRightConstraint?.constant = -12
 //            groupSenderLabel.addConstraints(heightConstant: 0)
@@ -206,30 +207,30 @@ open class DocumentMessageCell: MessageContentCell {
             if let fileURL = FileTransferManager.getfileUrlFromName(fileName: messageBody), FileManager.default.fileExists(atPath: fileURL.path) {
                 isFileExisted = true
             } else {}
-            
-            if isCurrentUser && (status == .pending || status == .sendingProgress || status == .failed) {
-                if (status == .pending || status == .sendingProgress) {
+            self.errorImageView.isHidden = true
+//            if isCurrentUser && (status == .pending || status == .sendingProgress || status == .failed) {
+//                if (status == .pending || status == .sendingProgress) {
 //                    self.indicatorView.isHidden = false
 //                    self.indicatorView.startAnimating()
-                } else {
+//                } else {
 //                    self.indicatorView.isHidden = true
 //                    self.indicatorView.stopAnimating()
-                    self.errorImageView.isHidden = false
-                }
+//                    self.errorImageView.isHidden = false
+//                }
                 
-            } else if !isFileExisted  && (status == .pending || status == .receiving || status == .failed) {
-                if status == .pending || status == .receiving {
+//            } else if !isFileExisted  && (status == .pending || status == .receiving || status == .failed) {
+//                if status == .pending || status == .receiving {
 //                    self.indicatorView.isHidden = false
 //                    self.indicatorView.startAnimating()
-                } else {
+//                } else {
 //                    self.indicatorView.isHidden = true
 //                    self.indicatorView.stopAnimating()
-                    self.errorImageView.isHidden = false
-                }
-            } else {
+//                    self.errorImageView.isHidden = false
+//                }
+//            } else {
 //                self.indicatorView.isHidden = true
 //                self.indicatorView.stopAnimating()
-            }
+//            }
         default:
             break
         }
