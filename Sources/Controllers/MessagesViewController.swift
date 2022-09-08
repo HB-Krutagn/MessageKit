@@ -174,7 +174,7 @@ open class MessagesViewController: UIViewController, UICollectionViewDelegateFlo
       return cell
     case .document:
       let cell = messagesCollectionView.dequeueReusableCell(DocumentMessageCell.self, for: indexPath)
-      cell.indexPath = indexPath
+//       cell.indexPath = indexPath
       cell.configure(with: message, at: indexPath, and: messagesCollectionView)
       return cell
 //     case .reply:
