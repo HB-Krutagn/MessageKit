@@ -84,7 +84,7 @@ open class DocumentMessageCell: MessageContentCell {
         
         sizeLabel.addConstraints(nameLabel.bottomAnchor,left: pictureView.rightAnchor, bottom: innerView.bottomAnchor,right: innerView.rightAnchor, leftConstant: 5, bottomConstant: 10, rightConstant: 100,heightConstant: 20)
         
-        timeLabel.addConstraints(right: innerView.rightAnchor,centerY:sizeLabel.centerYAnchor,rightConstant: 5, widthConstant: 100, heightConstant: 20)
+//        timeLabel.addConstraints(right: innerView.rightAnchor,centerY:sizeLabel.centerYAnchor,rightConstant: 5, widthConstant: 100, heightConstant: 20)
         
         errorImageView.centerInSuperview()
         errorImageView.constraint(equalTo: CGSize(width: 40, height: 40))
@@ -100,16 +100,15 @@ open class DocumentMessageCell: MessageContentCell {
 //        pictureView.addSubview(indicatorView)
         pictureView.addSubview(errorImageView)
         innerView.addSubview(sizeLabel)
-        innerView.addSubview(timeLabel)
+//        innerView.addSubview(timeLabel)
         
-        
-        let mainStackView = UIStackView(arrangedSubviews: [groupSenderLabel,innerView])
+        let mainStackView = UIStackView(arrangedSubviews: [innerView])
         mainStackView.axis = .vertical
         mainStackView.distribution = .fill
         mainStackView.spacing = 2.0
         self.messageContainerView.addSubview(mainStackView)
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
-        mainStackView.addConstraints(messageContainerView.topAnchor,left: messageContainerView.leftAnchor,bottom: messageContainerView.bottomAnchor,right: messageContainerView.rightAnchor, topConstant: 5,leftConstant: 5,bottomConstant: 5,rightConstant: 12)
+        mainStackView.addConstraints(messageContainerView.topAnchor,left: messageContainerView.leftAnchor,bottom: messageContainerView.bottomAnchor,right: messageContainerView.rightAnchor, topConstant: 5,leftConstant: 5,bottomConstant: 5,rightConstant: 5)
         
         setupConstraints()
     }
@@ -148,7 +147,7 @@ open class DocumentMessageCell: MessageContentCell {
 //        if let deliveryStatusIcon = (message as? MockMessage)?.getStatusImage() {
 //            timeLabel.setImageWith(text: "\(atribitedDateString?.string ?? "") ", rightIcon: deliveryStatusIcon,imageOffsetY: -2.0)
 //        } else {
-            timeLabel.text = atribitedDateString?.string ?? ""
+//            timeLabel.text = atribitedDateString?.string ?? ""
 //        }
         let isCurrentUser = dataSource.isFromCurrentSender(message: message)
         let containerLeftConstraint = messageContainerView.constraints.filter { $0.identifier == "left" }.first
