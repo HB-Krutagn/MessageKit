@@ -51,12 +51,12 @@ open class DocumentMessageCell: MessageContentCell {
     /// Responsible for setting up the constraints of the cell's subviews.
     open func setupConstraints() {
         pictureView.constraint(equalTo: CGSize(width: 40, height: 40))
-        pictureView.addConstraints(left: innerView.leftAnchor, centerY: innerView.centerYAnchor, leftConstant: 0)
+        pictureView.addConstraints(left: innerView.leftAnchor, centerY: innerView.centerYAnchor, leftConstant: 5)
 
         nameLabel.constraint(equalTo: CGSize(width: 150, height: 50))
         nameLabel.addConstraints(innerView.topAnchor,left: pictureView.rightAnchor,bottom: sizeLabel.topAnchor,right: innerView.rightAnchor,topConstant: 8, leftConstant: 5, rightConstant: 5)
         
-        sizeLabel.addConstraints(nameLabel.bottomAnchor,left: pictureView.rightAnchor, bottom: innerView.bottomAnchor,right: innerView.rightAnchor, leftConstant: 5, bottomConstant: 10, rightConstant: 100,heightConstant: 20)
+        sizeLabel.addConstraints(nameLabel.bottomAnchor,left: pictureView.rightAnchor, bottom: innerView.bottomAnchor,right: innerView.rightAnchor, leftConstant: 5, bottomConstant: 10, rightConstant: 100, heightConstant: 20)
     }
 
     open override func setupSubviews() {
@@ -90,7 +90,7 @@ open class DocumentMessageCell: MessageContentCell {
 
     /// Handle tap gesture on contentView and its subviews.
     open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
-       delegate?.didTapDocument(in: self)
+        delegate?.didTapDocument(in: self)
     }
 
     // MARK: - Configure Cell
@@ -109,15 +109,21 @@ open class DocumentMessageCell: MessageContentCell {
         let isCurrentUser = dataSource.isFromCurrentSender(message: message)
         let containerLeftConstraint = messageContainerView.constraints.filter { $0.identifier == "left" }.first
         let containerRightConstraint = messageContainerView.constraints.filter { $0.identifier == "right" }.first
+        let containerTopConstraint = messageContainerView.constraints.filter { $0.identifier == "top" }.first
+        let containerBottomConstraint = messageContainerView.constraints.filter { $0.identifier == "bottom" }.first
         if  isCurrentUser {
-            containerLeftConstraint?.constant = 5
-            containerRightConstraint?.constant = -12
+            containerLeftConstraint?.constant = 6
+            containerRightConstraint?.constant = -6
+            containerTopConstraint?.constant = 6
+            containerBottomConstraint?.constant = -6
             innerView.backgroundColor = UIColor.outgoingInner
             innerView.addConstraints(heightConstant: 65)
         } else {
             innerView.addConstraints(heightConstant: 65)
-            containerLeftConstraint?.constant = 12
-            containerRightConstraint?.constant = -5
+            containerLeftConstraint?.constant = 6
+            containerRightConstraint?.constant = -6
+            containerTopConstraint?.constant = 6
+            containerBottomConstraint?.constant = -6
             innerView.backgroundColor = UIColor.white
         }
 //
