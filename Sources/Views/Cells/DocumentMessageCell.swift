@@ -173,7 +173,7 @@ open class DocumentMessageCell: MessageContentCell {
 //                    innerView.addConstraints(heightConstant: 65)
 //                }
 //            } else {
-                groupSenderLabel.showOrHide(isHide: true)
+//                 groupSenderLabel.showOrHide(isHide: true)
                 innerView.addConstraints(heightConstant: 65)
 //            }
             containerLeftConstraint?.constant = 12
