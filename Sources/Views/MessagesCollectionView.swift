@@ -215,6 +215,7 @@ open class MessagesCollectionView: UICollectionView {
     register(LinkPreviewMessageCell.self)
     register(MessageReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader)
     register(MessageReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter)
+    register(DocumentMessageCell.self)
   }
 
   private func setupGestureRecognizers() {
