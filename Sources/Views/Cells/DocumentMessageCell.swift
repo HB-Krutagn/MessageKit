@@ -20,7 +20,7 @@ open class DocumentMessageCell: MessageContentCell {
     
     public lazy var pictureView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "pdf")
+        imageView.image = UIImage.messageKitImageWith(type: .unknown)
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -158,7 +158,7 @@ open class DocumentMessageCell: MessageContentCell {
             containerLeftConstraint?.constant = 5
             containerRightConstraint?.constant = -12
 //            groupSenderLabel.addConstraints(heightConstant: 0)
-            innerView.backgroundColor = UIColor.red//UIColor.replyOutgoing
+            innerView.backgroundColor = UIColor.outgoingInner
             innerView.addConstraints(heightConstant: 65)
         } else {
 //            if objMessage.groupFlag {
