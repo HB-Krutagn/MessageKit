@@ -264,6 +264,10 @@ extension MessagesDataSource {
   public func contactCell(for _: MessageType, at _: IndexPath, in _: MessagesCollectionView) -> UICollectionViewCell? {
     nil
   }
+  
+  public func documentCell(for _: MessageType, at _: IndexPath, in _: MessagesCollectionView) -> UICollectionViewCell? {
+    nil
+  }
 
   public func customCell(for _: MessageType, at _: IndexPath, in _: MessagesCollectionView) -> UICollectionViewCell {
     fatalError(MessageKitError.customDataUnresolvedCell)
