@@ -90,7 +90,7 @@ open class DocumentMessageCell: MessageContentCell {
 
     /// Handle tap gesture on contentView and its subviews.
     open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
-//        delegate?.didTapDocument(in: self)
+       delegate?.didTapDocument(in: self)
     }
 
     // MARK: - Configure Cell
