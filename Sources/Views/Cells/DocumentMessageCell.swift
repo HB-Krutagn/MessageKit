@@ -158,7 +158,7 @@ open class DocumentMessageCell: MessageContentCell {
             containerLeftConstraint?.constant = 5
             containerRightConstraint?.constant = -12
 //            groupSenderLabel.addConstraints(heightConstant: 0)
-            innerView.backgroundColor = UIColor.replyOutgoing
+            innerView.backgroundColor = UIColor.red//UIColor.replyOutgoing
             innerView.addConstraints(heightConstant: 65)
         } else {
 //            if objMessage.groupFlag {
@@ -178,7 +178,7 @@ open class DocumentMessageCell: MessageContentCell {
 //            }
             containerLeftConstraint?.constant = 12
             containerRightConstraint?.constant = -5
-            innerView.backgroundColor = UIColor.replyIncoming
+            innerView.backgroundColor = UIColor.green//UIColor.replyIncoming
         }
         
         let textColor = displayDelegate.textColor(for: message, at: indexPath, in: messagesCollectionView)
@@ -198,15 +198,15 @@ open class DocumentMessageCell: MessageContentCell {
 //                let imageName = QLPreviewHelper.getDocThumbnail(docUrl: url, fileName: fileName)
 //                self.pictureView.image = imageName
                 nameLabel.text = fileName
-                self.sizeLabel.text = url.fileSizeString + "  " + url.pathExtension.uppercased()
+//                 self.sizeLabel.text = url.fileSizeString + "  " + url.pathExtension.uppercased()
             } else {
                 nameLabel.text = "unknown"
 //                self.pictureView.image = QLPreviewHelper.getDocThumbnail(docUrl: nil, fileName: "unknown")
             }
-            var isFileExisted = false
-            if let fileURL = FileTransferManager.getfileUrlFromName(fileName: messageBody), FileManager.default.fileExists(atPath: fileURL.path) {
-                isFileExisted = true
-            } else {}
+//             var isFileExisted = false
+//             if let fileURL = FileTransferManager.getfileUrlFromName(fileName: messageBody), FileManager.default.fileExists(atPath: fileURL.path) {
+//                 isFileExisted = true
+//             } else {}
             self.errorImageView.isHidden = true
 //            if isCurrentUser && (status == .pending || status == .sendingProgress || status == .failed) {
 //                if (status == .pending || status == .sendingProgress) {
