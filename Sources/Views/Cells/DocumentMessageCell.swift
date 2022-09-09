@@ -30,7 +30,6 @@ open class DocumentMessageCell: MessageContentCell {
         let nameLabel = MessageLabel(frame: CGRect.zero)
         nameLabel.textAlignment = .left
         nameLabel.font = UIFont.systemFont(ofSize: 16)
-//        nameLabel.font = UIFont(name: FontName.Regular.rawValue, size: IS_iPAD ? 18.0: 16.0)
         nameLabel.text = ""
         nameLabel.numberOfLines = 1
         nameLabel.lineBreakMode = .byTruncatingMiddle
@@ -42,7 +41,6 @@ open class DocumentMessageCell: MessageContentCell {
         let durationLabel = MessageLabel(frame: CGRect.zero)
         durationLabel.textAlignment = .left
         durationLabel.font = UIFont.systemFont(ofSize: 14)
-//        durationLabel.font = UIFont(name: FontName.Regular.rawValue, size:  IS_iPAD ? 17.0: 14.0)
         durationLabel.text = ""
         durationLabel.textColor = .gray
         return durationLabel
@@ -56,7 +54,7 @@ open class DocumentMessageCell: MessageContentCell {
         pictureView.addConstraints(left: innerView.leftAnchor, centerY: innerView.centerYAnchor, leftConstant: 0)
 
         nameLabel.constraint(equalTo: CGSize(width: 150, height: 50))
-        nameLabel.addConstraints(innerView.topAnchor,left: pictureView.rightAnchor,bottom: sizeLabel.topAnchor,right: innerView.rightAnchor,topConstant: 5, leftConstant: 5, rightConstant: 5)
+        nameLabel.addConstraints(innerView.topAnchor,left: pictureView.rightAnchor,bottom: sizeLabel.topAnchor,right: innerView.rightAnchor,topConstant: 8, leftConstant: 5, rightConstant: 5)
         
         sizeLabel.addConstraints(nameLabel.bottomAnchor,left: pictureView.rightAnchor, bottom: innerView.bottomAnchor,right: innerView.rightAnchor, leftConstant: 5, bottomConstant: 10, rightConstant: 100,heightConstant: 20)
     }
@@ -103,63 +101,30 @@ open class DocumentMessageCell: MessageContentCell {
         guard let dataSource = messagesCollectionView.messagesDataSource else {
             fatalError("MessageKitError.nilMessagesDataSource")
         }
-        
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
             fatalError("MessageKitError.nilMessagesDisplayDelegate")
         }
         
-//        var status: MessageStatus = .none
-        var messageBody = ""
-//        guard let objMessage = DatabaseInterface.shared.getMessagefromID(messageID: message.messageId) else {
-//            return
-//        }
-//        messageBody = objMessage.body ?? ""
-//        status = ""//CommonUtilities.statusForValue(value: objMessage.status)
         let atribitedDateString = messagesCollectionView.messagesDataSource?.messageBottomLabelAttributedText(for: message, at: indexPath)
-//        if let deliveryStatusIcon = (message as? MockMessage)?.getStatusImage() {
-//            timeLabel.setImageWith(text: "\(atribitedDateString?.string ?? "") ", rightIcon: deliveryStatusIcon,imageOffsetY: -2.0)
-//        } else {
-//            timeLabel.text = atribitedDateString?.string ?? ""
-//        }
         let isCurrentUser = dataSource.isFromCurrentSender(message: message)
         let containerLeftConstraint = messageContainerView.constraints.filter { $0.identifier == "left" }.first
         let containerRightConstraint = messageContainerView.constraints.filter { $0.identifier == "right" }.first
         if  isCurrentUser {
-//            groupSenderLabel.showOrHide(isHide: true)
             containerLeftConstraint?.constant = 5
             containerRightConstraint?.constant = -12
-//            groupSenderLabel.addConstraints(heightConstant: 0)
             innerView.backgroundColor = UIColor.outgoingInner
             innerView.addConstraints(heightConstant: 65)
         } else {
-//            if objMessage.groupFlag {
-//                switch self.messageContainerView.style {
-//                case .bubbleTail:
-//                    groupSenderLabel.showOrHide(isHide: false)
-//                    groupSenderLabel.text = message.sender.displayName
-//                    groupSenderLabel.textColor = message.sender.displayName.getUIcolor()
-//                    innerView.addConstraints(heightConstant: 60)
-//                 default:
-//                    groupSenderLabel.showOrHide(isHide: true)
-//                    innerView.addConstraints(heightConstant: 65)
-//                }
-//            } else {
-//                 groupSenderLabel.showOrHide(isHide: true)
-                innerView.addConstraints(heightConstant: 65)
-//            }
+            innerView.addConstraints(heightConstant: 65)
             containerLeftConstraint?.constant = 12
             containerRightConstraint?.constant = -5
-            innerView.backgroundColor = UIColor.green//UIColor.replyIncoming
+            innerView.backgroundColor = UIColor.white
         }
-        
-        let textColor = displayDelegate.textColor(for: message, at: indexPath, in: messagesCollectionView)
-        nameLabel.textColor = textColor
-
-//        let textColor = displayDelegate.documentTextColor(for: message, at: indexPath, in: messagesCollectionView)
-//        self.nameLabel.textColor = textColor
-        
-//        self.indicatorView.isHidden = true
-//        self.indicatorView.stopAnimating()
+//
+//        let textColor = displayDelegate.textColor(for: message, at: indexPath, in: messagesCollectionView)
+//        nameLabel.textColor = textColor
+        nameLabel.textColor = .darkText
+        sizeLabel.textColor = .darkGray
         
         self.sizeLabel.text = ""
         switch message.kind {
@@ -167,40 +132,13 @@ open class DocumentMessageCell: MessageContentCell {
             if let url = item.url {
                 let fileName = url.lastPathComponent
                 let imageName = QLPreviewHelper.getDocThumbnail(docUrl: url, fileName: fileName)
-                self.pictureView.image = imageName
+                pictureView.image = imageName
                 nameLabel.text = fileName
-                 self.sizeLabel.text = url.fileSizeString + "  " + url.pathExtension.uppercased()
+                sizeLabel.text = url.fileSizeString + "  " + url.pathExtension.uppercased()
             } else {
                 nameLabel.text = "unknown"
-                self.pictureView.image = QLPreviewHelper.getDocThumbnail(docUrl: nil, fileName: "unknown")
+                pictureView.image = QLPreviewHelper.getDocThumbnail(docUrl: nil, fileName: "unknown")
             }
-//             var isFileExisted = false
-//             if let fileURL = FileTransferManager.getfileUrlFromName(fileName: messageBody), FileManager.default.fileExists(atPath: fileURL.path) {
-//                 isFileExisted = true
-//             } else {}
-//            if isCurrentUser && (status == .pending || status == .sendingProgress || status == .failed) {
-//                if (status == .pending || status == .sendingProgress) {
-//                    self.indicatorView.isHidden = false
-//                    self.indicatorView.startAnimating()
-//                } else {
-//                    self.indicatorView.isHidden = true
-//                    self.indicatorView.stopAnimating()
-//                    self.errorImageView.isHidden = false
-//                }
-                
-//            } else if !isFileExisted  && (status == .pending || status == .receiving || status == .failed) {
-//                if status == .pending || status == .receiving {
-//                    self.indicatorView.isHidden = false
-//                    self.indicatorView.startAnimating()
-//                } else {
-//                    self.indicatorView.isHidden = true
-//                    self.indicatorView.stopAnimating()
-//                    self.errorImageView.isHidden = false
-//                }
-//            } else {
-//                self.indicatorView.isHidden = true
-//                self.indicatorView.stopAnimating()
-//            }
         default:
             break
         }
