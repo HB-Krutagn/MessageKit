@@ -56,7 +56,7 @@ open class DocumentMessageCell: MessageContentCell {
         pictureView.addConstraints(left: innerView.leftAnchor, centerY: innerView.centerYAnchor, leftConstant: 0)
 
         nameLabel.constraint(equalTo: CGSize(width: 150, height: 50))
-        nameLabel.addConstraints(innerView.topAnchor,left: pictureView.rightAnchor,bottom: sizeLabel.topAnchor,right: innerView.rightAnchor,topConstant: 0, leftConstant: 5, rightConstant: 5)
+        nameLabel.addConstraints(innerView.topAnchor,left: pictureView.rightAnchor,bottom: sizeLabel.topAnchor,right: innerView.rightAnchor,topConstant: 5, leftConstant: 5, rightConstant: 5)
         
         sizeLabel.addConstraints(nameLabel.bottomAnchor,left: pictureView.rightAnchor, bottom: innerView.bottomAnchor,right: innerView.rightAnchor, leftConstant: 5, bottomConstant: 10, rightConstant: 100,heightConstant: 20)
     }
@@ -78,7 +78,6 @@ open class DocumentMessageCell: MessageContentCell {
         setupConstraints()
     }
 
-    
     open override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
       super.apply(layoutAttributes)
       if let attributes = layoutAttributes as? MessagesCollectionViewLayoutAttributes {
