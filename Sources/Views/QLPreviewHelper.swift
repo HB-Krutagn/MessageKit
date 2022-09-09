@@ -12,7 +12,7 @@ import PDFKit
 import MobileCoreServices
 import MessageKit
 
-class QLPreviewHelper {
+open class QLPreviewHelper {
     var controller: QLPreviewController
     
     init(source: QLPreviewControllerDataSource) {
@@ -20,17 +20,17 @@ class QLPreviewHelper {
         controller.dataSource = source
     }
     
-    func present(url:URL, onView view:UIViewController) {
+    open func present(url:URL, onView view:UIViewController) {
         if QLPreviewController.canPreview(url as NSURL) {
             controller.currentPreviewItemIndex = 0
             view.navigationController?.pushViewController(controller, animated: true)
         }
     }
     
-    class func getDocThumbnail(docUrl:URL?, fileName:String) -> UIImage {
+    open class func getDocThumbnail(docUrl:URL?, fileName:String) -> UIImage {
         let fileExtention = NSString(string: fileName).pathExtension.lowercased()
-        var extentionBasedImage:UIImage?
-        if let image = UIImage.messageKitImageWith(type: fileExtention) {
+        var extentionBasedImage: UIImage?
+        if let image = UIImage(named: fileExtention, in: Bundle.messageKitAssetBundle, compatibleWith: nil) {
             extentionBasedImage = image
         } else if fileExtention.hasPrefix("ppt") {
             extentionBasedImage = UIImage.messageKitImageWith(type: .ppt)
@@ -43,6 +43,6 @@ class QLPreviewHelper {
         } else {
             extentionBasedImage = UIImage.messageKitImageWith(type: .unknown)
         }
-        return extentionBasedImage
+        return extentionBasedImage!
     }
 }
