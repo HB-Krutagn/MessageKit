@@ -26,9 +26,10 @@ open class DocumentMessageCell: MessageContentCell {
     }()
 
     /// The time duration lable to display on audio messages.
-    public lazy var nameLabel: UILabel = {
-        let nameLabel = UILabel(frame: CGRect.zero)
+    public lazy var nameLabel: MessageLabel = {
+        let nameLabel = MessageLabel(frame: CGRect.zero)
         nameLabel.textAlignment = .left
+        nameLabel.font = UIFont.systemFont(ofSize: 16)
 //        nameLabel.font = UIFont(name: FontName.Regular.rawValue, size: IS_iPAD ? 18.0: 16.0)
         nameLabel.text = ""
         nameLabel.numberOfLines = 1
@@ -36,71 +37,35 @@ open class DocumentMessageCell: MessageContentCell {
         nameLabel.textColor = UIColor.black
         return nameLabel
     }()
-    public lazy var sizeLabel: UILabel = {
-        let durationLabel = UILabel(frame: CGRect.zero)
+    
+    public lazy var sizeLabel: MessageLabel = {
+        let durationLabel = MessageLabel(frame: CGRect.zero)
         durationLabel.textAlignment = .left
+        durationLabel.font = UIFont.systemFont(ofSize: 14)
 //        durationLabel.font = UIFont(name: FontName.Regular.rawValue, size:  IS_iPAD ? 17.0: 14.0)
         durationLabel.text = ""
         durationLabel.textColor = .gray
         return durationLabel
     }()
-    public lazy var timeLabel: InsetLabel = {
-        let label = InsetLabel()
-        label.textAlignment = .right
-        label.numberOfLines = 0
-//        label.font = UIFont(name: FontName.Regular.rawValue, size: IS_iPAD ? 15.0: 12.0)!
-        label.textColor = .gray
-        return label
-    }()
-//    open var indicatorView: NVActivityIndicatorView = {
-//        let indicator = NVActivityIndicatorView(frame: CGRect.zero, type: .circleStrokeSpin, color: .white, padding: 3)
-//        return indicator
-//    }()
-    open lazy var groupSenderLabel: UILabel = {
-           let senderLabel = UILabel(frame: CGRect.zero)
-//           senderLabel.font = UIFont(name: FontName.Semibold.rawValue, size: IS_iPAD ? 14.0: 12.0)
-           senderLabel.textColor = .black
-           senderLabel.numberOfLines = 1
-           return senderLabel
-       }()
-    open var errorImageView: UIImageView = {
-        let errorImg = UIImageView()
-        errorImg.image = UIImage(named: "retry")//"warn_icon"
-        errorImg.contentMode = .scaleToFill
-        return errorImg
-    }()
+
     // MARK: - Methods
 
     /// Responsible for setting up the constraints of the cell's subviews.
     open func setupConstraints() {
         pictureView.constraint(equalTo: CGSize(width: 40, height: 40))
         pictureView.addConstraints(left: innerView.leftAnchor, centerY: innerView.centerYAnchor, leftConstant: 0)
-        
-//        indicatorView.centerInSuperview()
-//        indicatorView.constraint(equalTo: CGSize(width: 40, height: 40))
-        
-//        nameLabel.constraint(equalTo: CGSize(width: 150, height: 50))
+
+        nameLabel.constraint(equalTo: CGSize(width: 150, height: 50))
         nameLabel.addConstraints(innerView.topAnchor,left: pictureView.rightAnchor,bottom: sizeLabel.topAnchor,right: innerView.rightAnchor,topConstant: 0, leftConstant: 5, rightConstant: 5)
         
         sizeLabel.addConstraints(nameLabel.bottomAnchor,left: pictureView.rightAnchor, bottom: innerView.bottomAnchor,right: innerView.rightAnchor, leftConstant: 5, bottomConstant: 10, rightConstant: 100,heightConstant: 20)
-        
-//        timeLabel.addConstraints(right: innerView.rightAnchor,centerY:sizeLabel.centerYAnchor,rightConstant: 5, widthConstant: 100, heightConstant: 20)
-        
-        errorImageView.centerInSuperview()
-        errorImageView.constraint(equalTo: CGSize(width: 40, height: 40))
-        errorImageView.layer.cornerRadius = 20
-//        errorImageView.setRoundCorner(radius: 20)
-        errorImageView.isHidden = true
     }
 
     open override func setupSubviews() {
         super.setupSubviews()
         innerView.addSubview(pictureView)
         innerView.addSubview(nameLabel)
-//        pictureView.addSubview(indicatorView)
-        pictureView.addSubview(errorImageView)
         innerView.addSubview(sizeLabel)
-//        innerView.addSubview(timeLabel)
         
         let mainStackView = UIStackView(arrangedSubviews: [innerView])
         mainStackView.axis = .vertical
@@ -111,6 +76,14 @@ open class DocumentMessageCell: MessageContentCell {
         mainStackView.addConstraints(messageContainerView.topAnchor,left: messageContainerView.leftAnchor,bottom: messageContainerView.bottomAnchor,right: messageContainerView.rightAnchor, topConstant: 5,leftConstant: 5,bottomConstant: 5,rightConstant: 5)
         
         setupConstraints()
+    }
+
+    
+    open override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+      super.apply(layoutAttributes)
+      if let attributes = layoutAttributes as? MessagesCollectionViewLayoutAttributes {
+          nameLabel.messageLabelFont = attributes.messageLabelFont
+      }
     }
 
     open override func prepareForReuse() {
@@ -188,25 +161,24 @@ open class DocumentMessageCell: MessageContentCell {
         
 //        self.indicatorView.isHidden = true
 //        self.indicatorView.stopAnimating()
-        self.errorImageView.isHidden = true
+        
         self.sizeLabel.text = ""
         switch message.kind {
         case .document(let item):
             if let url = item.url {
                 let fileName = url.lastPathComponent
-//                let imageName = QLPreviewHelper.getDocThumbnail(docUrl: url, fileName: fileName)
-//                self.pictureView.image = imageName
+                let imageName = QLPreviewHelper.getDocThumbnail(docUrl: url, fileName: fileName)
+                self.pictureView.image = imageName
                 nameLabel.text = fileName
-//                 self.sizeLabel.text = url.fileSizeString + "  " + url.pathExtension.uppercased()
+                 self.sizeLabel.text = url.fileSizeString + "  " + url.pathExtension.uppercased()
             } else {
                 nameLabel.text = "unknown"
-//                self.pictureView.image = QLPreviewHelper.getDocThumbnail(docUrl: nil, fileName: "unknown")
+                self.pictureView.image = QLPreviewHelper.getDocThumbnail(docUrl: nil, fileName: "unknown")
             }
 //             var isFileExisted = false
 //             if let fileURL = FileTransferManager.getfileUrlFromName(fileName: messageBody), FileManager.default.fileExists(atPath: fileURL.path) {
 //                 isFileExisted = true
 //             } else {}
-            self.errorImageView.isHidden = true
 //            if isCurrentUser && (status == .pending || status == .sendingProgress || status == .failed) {
 //                if (status == .pending || status == .sendingProgress) {
 //                    self.indicatorView.isHidden = false
