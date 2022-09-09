@@ -45,6 +45,8 @@ extension UIColor {
   internal static var label: UIColor { colorFromAssetBundle(named: "label") }
 
   internal static var avatarViewBackground: UIColor { colorFromAssetBundle(named: "avatarViewBackground") }
+  
+  internal static var outgoingInner: UIColor { colorFromAssetBundle(named: "outgoingInner") }
 
   // MARK: Private
 
