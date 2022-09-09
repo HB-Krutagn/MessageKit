@@ -195,7 +195,7 @@ public protocol MessagesDataSource: AnyObject {
   /// - Note:
   ///   This method will call fatalError() on default. You must override this method if you are using MessageKind.custom messages.
   func documentCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
-    -> UICollectionViewCell
+    -> UICollectionViewCell?
   
   /// Typing indicator cell used when the indicator is set to be shown
   ///
