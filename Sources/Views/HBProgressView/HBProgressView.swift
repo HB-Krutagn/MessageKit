@@ -73,10 +73,13 @@ open class HBProgressView: UIView {
     }
 
     func loadViewFromNib() -> UIView {
-        let bundle = Bundle(for: type(of: self))
+        let bundle = Bundle(for: HBProgressView.self)
         let nib = UINib(nibName: String(describing: type(of: self)), bundle: bundle)
-        let nibView = nib.instantiate(withOwner: self, options: nil).first as? UIView ?? UIView()
-        return nibView
+        return nib.instantiate(withOwner: self, options: nil).first as? UIView ?? UIView()
+//        let bundle = Bundle(for: type(of: self))
+//        let nib = UINib(nibName: String(describing: type(of: self)), bundle: bundle)
+//        let nibView = nib.instantiate(withOwner: self, options: nil).first as? UIView ?? UIView()
+//        return nibView
     }
 
     // MARK: - Actions
@@ -99,5 +102,4 @@ open class HBProgressView: UIView {
         vwRetryContainer.isHidden = shouldProgressVisible
         vwProgressContainer.isHidden = !shouldProgressVisible
     }
-    
 }
