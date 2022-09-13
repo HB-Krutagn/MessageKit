@@ -90,6 +90,10 @@ open class MessageContentCell: MessageCollectionViewCell {
 
   /// The `MessageCellDelegate` for the cell.
   open weak var delegate: MessageCellDelegate?
+    
+  /// The `MessageProgressDelegate` for the cell.
+  open weak var delegateProgress: HBProgressViewDelegate?
+
 
   open override func prepareForReuse() {
     super.prepareForReuse()
@@ -143,6 +147,7 @@ open class MessageContentCell: MessageCollectionViewCell {
     }
 
     delegate = messagesCollectionView.messageCellDelegate
+    delegateProgress = messagesCollectionView.messageProgressDelegate
 
     let messageColor = displayDelegate.backgroundColor(for: message, at: indexPath, in: messagesCollectionView)
     let messageStyle = displayDelegate.messageStyle(for: message, at: indexPath, in: messagesCollectionView)
@@ -372,3 +377,4 @@ open class MessageContentCell: MessageCollectionViewCell {
     messageTimestampLabel.frame = CGRect(origin: origin, size: size)
   }
 }
+

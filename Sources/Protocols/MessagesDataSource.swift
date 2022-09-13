@@ -185,6 +185,18 @@ public protocol MessagesDataSource: AnyObject {
   func customCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
     -> UICollectionViewCell
 
+  /// Document collectionView cell for message with `custom` message type.
+  ///
+  /// - Parameters:
+  ///   - message: The `document` message type
+  ///   - indexPath: The `IndexPath` of the cell.
+  ///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+  ///
+  /// - Note:
+  ///   This method will call fatalError() on default. You must override this method if you are using MessageKind.custom messages.
+  func documentCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
+    -> UICollectionViewCell?
+  
   /// Typing indicator cell used when the indicator is set to be shown
   ///
   /// - Parameters:
@@ -250,6 +262,10 @@ extension MessagesDataSource {
   }
 
   public func contactCell(for _: MessageType, at _: IndexPath, in _: MessagesCollectionView) -> UICollectionViewCell? {
+    nil
+  }
+  
+  public func documentCell(for _: MessageType, at _: IndexPath, in _: MessagesCollectionView) -> UICollectionViewCell? {
     nil
   }
 

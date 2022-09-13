@@ -36,6 +36,14 @@ open class MediaMessageCell: MessageContentCell {
     imageView.contentMode = .scaleAspectFill
     return imageView
   }()
+    
+  open var messageProgressView: HBProgressView = {
+    let progressView = HBProgressView()
+    progressView.clipsToBounds = true
+    progressView.layer.masksToBounds = true
+    return progressView
+   }()
+
 
   // MARK: - Methods
 
@@ -44,12 +52,14 @@ open class MediaMessageCell: MessageContentCell {
     imageView.fillSuperview()
     playButtonView.centerInSuperview()
     playButtonView.constraint(equalTo: CGSize(width: 35, height: 35))
+    messageProgressView.fillSuperview()
   }
 
   open override func setupSubviews() {
     super.setupSubviews()
     messageContainerView.addSubview(imageView)
     messageContainerView.addSubview(playButtonView)
+    messageContainerView.addSubview(messageProgressView)
     setupConstraints()
   }
 
@@ -94,3 +104,4 @@ open class MediaMessageCell: MessageContentCell {
     delegate?.didTapImage(in: self)
   }
 }
+

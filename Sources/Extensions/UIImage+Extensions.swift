@@ -28,6 +28,35 @@ public enum ImageType: String {
   case play
   case pause
   case disclosure
+  case ai
+  case android
+  case apk
+  case css
+  case disc
+  case doc
+  case excel
+  case font
+  case iso
+  case javascript
+  case jpg
+  case js
+  case pdf
+  case php
+  case powerpoint
+  case ppt
+  case psd
+  case record
+  case sql
+  case svg
+  case text
+  case ttf
+  case txt
+  case unknown
+  case vcf
+  case vector
+  case video
+  case word
+  case zip
 }
 
 /// This extension provide a way to access image resources with in framework
