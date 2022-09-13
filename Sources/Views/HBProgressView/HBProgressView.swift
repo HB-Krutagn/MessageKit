@@ -7,7 +7,6 @@
 
 import UIKit
 import MaterialComponents.MaterialActivityIndicator
-import MessageKit
 
 open class HBProgressView: UIView {
     
