@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import MessageKit
 
-public protocol HBProgressViewDelegate {
+public protocol HBProgressViewDelegate: class {
     func didTapCancelProgress(in cell: MessageCollectionViewCell)
     func didTapRetryProgress(in cell: MessageCollectionViewCell)
 }
