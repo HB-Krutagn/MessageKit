@@ -48,7 +48,7 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iwg-1T-B9m">
                                             <rect key="frame" x="83" y="57" width="50" height="50"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                            <state key="normal" image="IconCancel_Normal"/>
+                                            <state key="normal" image="ic_cancel_white"/>
                                             <connections>
                                                 <action selector="btnCancelClicked:" destination="-1" eventType="touchUpInside" id="JfN-11-3Jv"/>
                                             </connections>
