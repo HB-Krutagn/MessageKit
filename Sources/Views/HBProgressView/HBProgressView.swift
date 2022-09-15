@@ -11,16 +11,27 @@ import MaterialComponents.MaterialActivityIndicator
 open class HBProgressView: UIView {
     
     // MARK: - Outlets
+    @IBOutlet weak var stackVW: UIStackView!
     @IBOutlet weak var vwProgressContainer: UIView!
     @IBOutlet weak var activityIndicator: MDCActivityIndicator!
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var vwRetryContainer: UIView!
-    @IBOutlet weak var btnRetry: UIButton!
+
+    public lazy var btnRetry: UIButton = {
+        let btn = UIButton()
+        btn.constraint(equalTo: CGSize(width: 50, height: 50))
+        if let image = UIImage(named: "ic_refresh", in: Bundle.messageKitAssetBundle, compatibleWith: nil) {
+            btn.setImage(image, for: .normal)
+        }
+        return btn
+    }()
+    var onCompletionOfProgress  : (() -> ())?
     
     // MARK: - Variables
     var progress: CGFloat = 0.0 {
         didSet {
             if progress >= 1 {
+                activityIndicator.progress = Float(progress)
                 btnCancel.isHidden = true
                 shouldAnimate = false
             } else {
@@ -40,6 +51,7 @@ open class HBProgressView: UIView {
             } else {
                 if activityIndicator.isAnimating {
                     activityIndicator.stopAnimating()
+                    onCompletionOfProgress?()
                 }
             }
         }
@@ -59,7 +71,7 @@ open class HBProgressView: UIView {
 
     func setupView() {
         nibSetup()
-        createProgressView()
+        vwRetryContainer.addSubview(btnRetry)
     }
 
     func nibSetup() {
@@ -75,29 +87,19 @@ open class HBProgressView: UIView {
         let bundle = Bundle(for: HBProgressView.self)
         let nib = UINib(nibName: String(describing: type(of: self)), bundle: bundle)
         return nib.instantiate(withOwner: self, options: nil).first as? UIView ?? UIView()
-//        let bundle = Bundle(for: type(of: self))
-//        let nib = UINib(nibName: String(describing: type(of: self)), bundle: bundle)
-//        let nibView = nib.instantiate(withOwner: self, options: nil).first as? UIView ?? UIView()
-//        return nibView
     }
 
-    // MARK: - Actions
-    @IBAction func btnCancelClicked(_ sender: UIButton) {
-        print("Cancel Progress Clicked")
-        shouldAnimate = false
-        setVisibleView(shouldProgressVisible: false)
-    }
-    
     // MARK: - Custom Methods
-    func createProgressView() {
+    
+    open func setDefaultConfig() {
+        activityIndicator.indicatorMode = .determinate
         activityIndicator.radius = 25
-        activityIndicator.strokeWidth = 3.0
-        activityIndicator.indicatorMode = .indeterminate
-        activityIndicator.progress = 0.5
-        shouldAnimate = true
+        activityIndicator.strokeWidth = 5
+        activityIndicator.cycleColors = [.white]
+        activityIndicator.trackEnabled = true
     }
     
-    private func setVisibleView(shouldProgressVisible: Bool) {
+    open func setVisibleView(shouldProgressVisible: Bool) {
         vwRetryContainer.isHidden = shouldProgressVisible
         vwProgressContainer.isHidden = !shouldProgressVisible
     }
