@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 import UIKit
+import MaterialComponents.MaterialActivityIndicator
 
 /// A subclass of `MessageContentCell` used to display video and audio messages.
 open class MediaMessageCell: MessageContentCell {
@@ -41,9 +42,46 @@ open class MediaMessageCell: MessageContentCell {
         let progressView = HBProgressView()
         progressView.clipsToBounds = true
         progressView.layer.masksToBounds = true
+        progressView.setDefaultConfig()
         return progressView
     }()
     
+    open var progressPercentage: CGFloat? = nil {
+        didSet {
+            setProgress(progress: progressPercentage)
+        }
+    }
+    
+    open var progressIndicatorMode: MDCActivityIndicatorMode = .determinate {
+        didSet {
+            messageProgressView.activityIndicator.indicatorMode = progressIndicatorMode
+        }
+    }
+    
+    open var progressIndicatorRadius: CGFloat = 25 {
+        didSet {
+            messageProgressView.activityIndicator.radius = progressIndicatorRadius
+        }
+    }
+    
+    open var progressIndicatorStrockWidth: CGFloat = 5.0 {
+        didSet {
+            messageProgressView.activityIndicator.strokeWidth = progressIndicatorStrockWidth
+        }
+    }
+
+    open var progressIndicatorColor: UIColor = .white {
+        didSet {
+            messageProgressView.activityIndicator.cycleColors = [progressIndicatorColor]
+        }
+    }
+
+    open var progressIndicatorTrackEnabled: Bool = true {
+        didSet {
+            messageProgressView.activityIndicator.trackEnabled = progressIndicatorTrackEnabled
+        }
+    }
+
     // MARK: - Methods
     
     /// Responsible for setting up the constraints of the cell's subviews.
@@ -52,6 +90,7 @@ open class MediaMessageCell: MessageContentCell {
         playButtonView.centerInSuperview()
         playButtonView.constraint(equalTo: CGSize(width: 35, height: 35))
         messageProgressView.fillSuperview()
+        messageProgressView.btnRetry.centerInSuperview()
     }
     
     open override func setupSubviews() {
@@ -59,6 +98,7 @@ open class MediaMessageCell: MessageContentCell {
         messageContainerView.addSubview(imageView)
         messageContainerView.addSubview(playButtonView)
         messageContainerView.addSubview(messageProgressView)
+        messageProgressView.isHidden = true
         setupConstraints()
     }
     
@@ -76,7 +116,6 @@ open class MediaMessageCell: MessageContentCell {
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
             fatalError(MessageKitError.nilMessagesDisplayDelegate)
         }
-        
         switch message.kind {
         case .photo(let mediaItem):
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
@@ -114,6 +153,19 @@ open class MediaMessageCell: MessageContentCell {
                 return
             }
             delegate?.didTapImage(in: self)
+        }
+    }
+    
+    private func setProgress(progress: CGFloat?) {
+        guard let currentProgress = progress else {
+            messageProgressView.isHidden = true
+            return
+        }
+        messageProgressView.isHidden = false
+        messageProgressView.progress = currentProgress
+        messageProgressView.onCompletionOfProgress = { [weak self] in
+            guard let weakSelf = self else { return }
+            weakSelf.messageProgressView.isHidden = true
         }
     }
 }
