@@ -93,8 +93,7 @@ open class MessageContentCell: MessageCollectionViewCell {
     
   /// The `MessageProgressDelegate` for the cell.
   open weak var delegateProgress: HBProgressViewDelegate?
-
-
+    
   open override func prepareForReuse() {
     super.prepareForReuse()
     cellTopLabel.text = nil
@@ -377,4 +376,3 @@ open class MessageContentCell: MessageCollectionViewCell {
     messageTimestampLabel.frame = CGRect(origin: origin, size: size)
   }
 }
-
