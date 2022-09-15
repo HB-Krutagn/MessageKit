@@ -273,15 +273,12 @@ extension MessagesDataSource {
     fatalError(MessageKitError.customDataUnresolvedCell)
   }
 
-  public func typingIndicator(
-    at indexPath: IndexPath,
-    in messagesCollectionView: MessagesCollectionView)
-    -> UICollectionViewCell
-  {
+  public func typingIndicator(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
+    -> UICollectionViewCell {
     messagesCollectionView.dequeueReusableCell(TypingIndicatorCell.self, for: indexPath)
   }
     
   public func isEditingEnabled(for message: MessageType) -> Bool {
         return false
-    }
+    }    
 }
