@@ -20,7 +20,7 @@ open class HBProgressView: UIView {
     public lazy var btnRetry: UIButton = {
         let btn = UIButton()
         btn.constraint(equalTo: CGSize(width: 50, height: 50))
-        if let image = UIImage(named: "ic_refresh", in: Bundle.messageKitAssetBundle, compatibleWith: nil) {
+        if let image = UIImage(named: "retry", in: Bundle.messageKitAssetBundle, compatibleWith: nil) {
             btn.setImage(image, for: .normal)
         }
         return btn
