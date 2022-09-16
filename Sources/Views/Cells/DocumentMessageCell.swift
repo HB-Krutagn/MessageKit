@@ -63,31 +63,31 @@ open class DocumentMessageCell: MessageContentCell {
     
     open var progressIndicatorMode: MDCActivityIndicatorMode = .determinate {
         didSet {
-            messageProgressView.activityIndicator.indicatorMode = progressIndicatorMode
+            messageProgressView.indicatorMode = progressIndicatorMode
         }
     }
     
-    open var progressIndicatorRadius: CGFloat = 25 {
+    open var progressIndicatorRadius: CGFloat = 20 {
         didSet {
-            messageProgressView.activityIndicator.radius = progressIndicatorRadius
+            messageProgressView.indicatorRadius = progressIndicatorRadius
         }
     }
     
-    open var progressIndicatorStrockWidth: CGFloat = 5.0 {
+    open var progressIndicatorStrockWidth: CGFloat = 4.0 {
         didSet {
-            messageProgressView.activityIndicator.strokeWidth = progressIndicatorStrockWidth
+            messageProgressView.indicatorStrockWidth = progressIndicatorStrockWidth
         }
     }
 
     open var progressIndicatorColor: UIColor = .white {
         didSet {
-            messageProgressView.activityIndicator.cycleColors = [progressIndicatorColor]
+            messageProgressView.indicatorColor = progressIndicatorColor
         }
     }
 
     open var progressIndicatorTrackEnabled: Bool = true {
         didSet {
-            messageProgressView.activityIndicator.trackEnabled = progressIndicatorTrackEnabled
+            messageProgressView.indicatorTrackEnabled = progressIndicatorTrackEnabled
         }
     }
 
@@ -102,11 +102,16 @@ open class DocumentMessageCell: MessageContentCell {
         nameLabel.addConstraints(innerView.topAnchor,left: pictureView.rightAnchor,bottom: sizeLabel.topAnchor,right: innerView.rightAnchor,topConstant: 8, leftConstant: 5, rightConstant: 5)
         
         sizeLabel.addConstraints(nameLabel.bottomAnchor,left: pictureView.rightAnchor, bottom: innerView.bottomAnchor,right: innerView.rightAnchor, leftConstant: 5, bottomConstant: 8, rightConstant: 100, heightConstant: 20)
-        messageProgressView.fillSuperview()
+
+        messageProgressView.addConstraints(left: pictureView.leftAnchor, centerY: pictureView.centerYAnchor, leftConstant: -3)
+        messageProgressView.constraint(equalTo: CGSize(width: 46, height: 46))
+        messageProgressView.layer.cornerRadius = 23
+
+        messageProgressView.activityIndicator.centerInSuperview()
         messageProgressView.activityIndicator.constraint(equalTo: CGSize(width: 40, height: 40))
-        messageProgressView.activityIndicator.addConstraints(left: pictureView.leftAnchor, centerY: pictureView.centerYAnchor, leftConstant: 0)
+
+        messageProgressView.btnRetry.centerInSuperview()
         messageProgressView.btnRetry.constraint(equalTo: CGSize(width: 40, height: 40))
-        messageProgressView.btnRetry.addConstraints(left: pictureView.leftAnchor, centerY: pictureView.centerYAnchor, leftConstant: 0)
     }
 
     open override func setupSubviews() {
@@ -124,6 +129,7 @@ open class DocumentMessageCell: MessageContentCell {
         mainStackView.addConstraints(messageContainerView.topAnchor,left: messageContainerView.leftAnchor,bottom: messageContainerView.bottomAnchor,right: messageContainerView.rightAnchor, topConstant: 5,leftConstant: 5,bottomConstant: 5,rightConstant: 5)
         messageContainerView.addSubview(messageProgressView)
         messageProgressView.isHidden = true
+        setProgressViewConfig()
         setupConstraints()
     }
 
@@ -155,6 +161,14 @@ open class DocumentMessageCell: MessageContentCell {
         }
     }
 
+    func setProgressViewConfig() {
+        messageProgressView.indicatorMode = progressIndicatorMode
+        messageProgressView.indicatorRadius = progressIndicatorRadius
+        messageProgressView.indicatorStrockWidth = progressIndicatorStrockWidth
+        messageProgressView.indicatorColor = progressIndicatorColor
+        messageProgressView.indicatorTrackEnabled = progressIndicatorTrackEnabled
+    }
+
     // MARK: - Configure Cell
 
     open override func configure(with message: MessageType, at indexPath: IndexPath, and messagesCollectionView: MessagesCollectionView) {
@@ -166,7 +180,7 @@ open class DocumentMessageCell: MessageContentCell {
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
             fatalError("MessageKitError.nilMessagesDisplayDelegate")
         }
-        
+        setProgressViewConfig()
         let atribitedDateString = messagesCollectionView.messagesDataSource?.messageBottomLabelAttributedText(for: message, at: indexPath)
         let isCurrentUser = dataSource.isFromCurrentSender(message: message)
         let containerLeftConstraint = messageContainerView.constraints.filter { $0.identifier == "left" }.first
