@@ -57,6 +57,10 @@ public enum ImageType: String {
   case video
   case word
   case zip
+  case music
+  case mp3
+  case mp4
+  case mail
 }
 
 /// This extension provide a way to access image resources with in framework
