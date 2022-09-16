@@ -54,7 +54,7 @@ open class DocumentMessageCell: MessageContentCell {
         return progressView
     }()
 
-    open var progressPercentage: CGFloat? = nil {
+    open var progressPercentage: Float? = nil {
         didSet {
             setProgress(progress: progressPercentage)
         }
@@ -179,7 +179,7 @@ open class DocumentMessageCell: MessageContentCell {
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
             fatalError("MessageKitError.nilMessagesDisplayDelegate")
         }
-        setProgressViewConfig()
+
         let atribitedDateString = messagesCollectionView.messagesDataSource?.messageBottomLabelAttributedText(for: message, at: indexPath)
         let isCurrentUser = dataSource.isFromCurrentSender(message: message)
         let containerLeftConstraint = messageContainerView.constraints.filter { $0.identifier == "left" }.first
@@ -225,7 +225,7 @@ open class DocumentMessageCell: MessageContentCell {
         }
     }
     
-    private func setProgress(progress: CGFloat?) {
+    private func setProgress(progress: Float?) {
         guard let currentProgress = progress else {
             messageProgressView.isHidden = true
             return
