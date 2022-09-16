@@ -24,9 +24,9 @@ import Foundation
 
 extension Bundle {
   #if IS_SPM
-  static var messageKitAssetBundle = Bundle.module
+  internal static var messageKitAssetBundle = Bundle.module
   #else
-  static var messageKitAssetBundle: Bundle {
+  internal static var messageKitAssetBundle: Bundle {
     Bundle(for: MessagesViewController.self)
   }
   #endif
