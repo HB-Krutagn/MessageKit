@@ -19,7 +19,6 @@ open class HBProgressView: UIView {
 
     public lazy var btnRetry: UIButton = {
         let btn = UIButton()
-        btn.constraint(equalTo: CGSize(width: 50, height: 50))
         if let image = UIImage(named: "retry", in: Bundle.messageKitAssetBundle, compatibleWith: nil) {
             btn.setImage(image, for: .normal)
         }
@@ -57,6 +56,36 @@ open class HBProgressView: UIView {
         }
     }
     
+    var indicatorMode: MDCActivityIndicatorMode = .determinate {
+        didSet {
+            activityIndicator.indicatorMode = indicatorMode
+        }
+    }
+    
+    var indicatorRadius: CGFloat = 25 {
+        didSet {
+            activityIndicator.radius = indicatorRadius
+        }
+    }
+    
+    var indicatorStrockWidth: CGFloat = 5.0 {
+        didSet {
+            activityIndicator.strokeWidth = indicatorStrockWidth
+        }
+    }
+
+    var indicatorColor: UIColor = .white {
+        didSet {
+            activityIndicator.cycleColors = [indicatorColor]
+        }
+    }
+
+    open var indicatorTrackEnabled: Bool = true {
+        didSet {
+            activityIndicator.trackEnabled = indicatorTrackEnabled
+        }
+    }
+
     // MARK: - Default Methods
     
     override init(frame: CGRect) {
@@ -98,7 +127,7 @@ open class HBProgressView: UIView {
         activityIndicator.cycleColors = [.white]
         activityIndicator.trackEnabled = true
     }
-    
+        
     open func setVisibleView(shouldProgressVisible: Bool) {
         vwRetryContainer.isHidden = shouldProgressVisible
         vwProgressContainer.isHidden = !shouldProgressVisible
