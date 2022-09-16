@@ -42,7 +42,6 @@ open class MediaMessageCell: MessageContentCell {
         let progressView = HBProgressView()
         progressView.clipsToBounds = true
         progressView.layer.masksToBounds = true
-        progressView.setDefaultConfig()
         return progressView
     }()
     
@@ -54,31 +53,31 @@ open class MediaMessageCell: MessageContentCell {
     
     open var progressIndicatorMode: MDCActivityIndicatorMode = .determinate {
         didSet {
-            messageProgressView.activityIndicator.indicatorMode = progressIndicatorMode
+            messageProgressView.indicatorMode = progressIndicatorMode
         }
     }
     
     open var progressIndicatorRadius: CGFloat = 25 {
         didSet {
-            messageProgressView.activityIndicator.radius = progressIndicatorRadius
+            messageProgressView.indicatorRadius = progressIndicatorRadius
         }
     }
     
     open var progressIndicatorStrockWidth: CGFloat = 5.0 {
         didSet {
-            messageProgressView.activityIndicator.strokeWidth = progressIndicatorStrockWidth
+            messageProgressView.indicatorStrockWidth = progressIndicatorStrockWidth
         }
     }
 
     open var progressIndicatorColor: UIColor = .white {
         didSet {
-            messageProgressView.activityIndicator.cycleColors = [progressIndicatorColor]
+            messageProgressView.indicatorColor = progressIndicatorColor
         }
     }
 
     open var progressIndicatorTrackEnabled: Bool = true {
         didSet {
-            messageProgressView.activityIndicator.trackEnabled = progressIndicatorTrackEnabled
+            messageProgressView.indicatorTrackEnabled = progressIndicatorTrackEnabled
         }
     }
 
@@ -89,8 +88,11 @@ open class MediaMessageCell: MessageContentCell {
         imageView.fillSuperview()
         playButtonView.centerInSuperview()
         playButtonView.constraint(equalTo: CGSize(width: 35, height: 35))
-        messageProgressView.fillSuperview()
+        messageProgressView.centerInSuperview()
+        messageProgressView.constraint(equalTo: CGSize(width: 56, height: 56))
+        messageProgressView.layer.cornerRadius = 28
         messageProgressView.btnRetry.centerInSuperview()
+        messageProgressView.btnRetry.constraint(equalTo: CGSize(width: 50, height: 50))
     }
     
     open override func setupSubviews() {
@@ -99,6 +101,7 @@ open class MediaMessageCell: MessageContentCell {
         messageContainerView.addSubview(playButtonView)
         messageContainerView.addSubview(messageProgressView)
         messageProgressView.isHidden = true
+        setProgressViewConfig()
         setupConstraints()
     }
     
@@ -107,12 +110,19 @@ open class MediaMessageCell: MessageContentCell {
         imageView.image = nil
     }
     
+    func setProgressViewConfig() {
+        messageProgressView.indicatorMode = progressIndicatorMode
+        messageProgressView.indicatorRadius = progressIndicatorRadius
+        messageProgressView.indicatorStrockWidth = progressIndicatorStrockWidth
+        messageProgressView.indicatorColor = progressIndicatorColor
+        messageProgressView.indicatorTrackEnabled = progressIndicatorTrackEnabled
+    }
+    
     open override func configure(
         with message: MessageType,
         at indexPath: IndexPath,
         and messagesCollectionView: MessagesCollectionView) {
         super.configure(with: message, at: indexPath, and: messagesCollectionView)
-        
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
             fatalError(MessageKitError.nilMessagesDisplayDelegate)
         }
