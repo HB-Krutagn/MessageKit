@@ -38,14 +38,14 @@ open class MediaMessageCell: MessageContentCell {
         return imageView
     }()
     
-    open var messageProgressView: HBProgressView = {
+    open lazy var messageProgressView: HBProgressView = {
         let progressView = HBProgressView()
         progressView.clipsToBounds = true
         progressView.layer.masksToBounds = true
         return progressView
     }()
     
-    open var progressPercentage: CGFloat? = nil {
+    open var progressPercentage: Float? = nil {
         didSet {
             setProgress(progress: progressPercentage)
         }
@@ -100,8 +100,8 @@ open class MediaMessageCell: MessageContentCell {
         messageContainerView.addSubview(imageView)
         messageContainerView.addSubview(playButtonView)
         messageContainerView.addSubview(messageProgressView)
-        messageProgressView.isHidden = true
         setProgressViewConfig()
+        messageProgressView.isHidden = true
         setupConstraints()
     }
     
@@ -130,9 +130,19 @@ open class MediaMessageCell: MessageContentCell {
         case .photo(let mediaItem):
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
             playButtonView.isHidden = true
+            messageProgressView.isHidden = false
+            progressPercentage = mediaItem.mediaProgress
+            if mediaItem.mediaProgress >= 1.0 || mediaItem.mediaProgress <= 0.0 {
+                messageProgressView.isHidden = true
+            }
         case .video(let mediaItem):
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
             playButtonView.isHidden = false
+            messageProgressView.isHidden = false
+            progressPercentage = mediaItem.mediaProgress
+            if mediaItem.mediaProgress >= 1.0 || mediaItem.mediaProgress <= 0.0 {
+                messageProgressView.isHidden = true
+            }
         default:
             break
         }
@@ -166,7 +176,7 @@ open class MediaMessageCell: MessageContentCell {
         }
     }
     
-    private func setProgress(progress: CGFloat?) {
+    private func setProgress(progress: Float?) {
         guard let currentProgress = progress else {
             messageProgressView.isHidden = true
             return
