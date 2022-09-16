@@ -51,7 +51,6 @@ open class DocumentMessageCell: MessageContentCell {
         let progressView = HBProgressView()
         progressView.clipsToBounds = true
         progressView.layer.masksToBounds = true
-        progressView.setDefaultConfig()
         return progressView
     }()
 
