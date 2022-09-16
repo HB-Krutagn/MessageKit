@@ -8,7 +8,7 @@
 import UIKit
 import MaterialComponents.MaterialActivityIndicator
 
-open class HBProgressView: UIView {
+open class HBProgressView: UIView, MDCActivityIndicatorDelegate {
     
     // MARK: - Outlets
     @IBOutlet weak var stackVW: UIStackView!
@@ -27,35 +27,17 @@ open class HBProgressView: UIView {
     var onCompletionOfProgress  : (() -> ())?
     
     // MARK: - Variables
-    var progress: CGFloat = 0.0 {
+    var progress: Float = 0.0 {
         didSet {
-            if progress >= 1 {
-                activityIndicator.progress = Float(progress)
+            activityIndicator.setProgress(progress, animated: false)
+            if progress >= 1.0 || progress <= 0.0 {
                 btnCancel.isHidden = true
-                shouldAnimate = false
             } else {
                 btnCancel.isHidden = false
-                activityIndicator.progress = Float(progress)
-                shouldAnimate = true
             }
         }
     }
-    
-    var shouldAnimate: Bool = false {
-        didSet {
-            if shouldAnimate {
-                if !activityIndicator.isAnimating {
-                    activityIndicator.startAnimating()
-                }
-            } else {
-                if activityIndicator.isAnimating {
-                    activityIndicator.stopAnimating()
-                    onCompletionOfProgress?()
-                }
-            }
-        }
-    }
-    
+        
     var indicatorMode: MDCActivityIndicatorMode = .determinate {
         didSet {
             activityIndicator.indicatorMode = indicatorMode
@@ -80,7 +62,7 @@ open class HBProgressView: UIView {
         }
     }
 
-    open var indicatorTrackEnabled: Bool = true {
+    var indicatorTrackEnabled: Bool = true {
         didSet {
             activityIndicator.trackEnabled = indicatorTrackEnabled
         }
@@ -101,6 +83,7 @@ open class HBProgressView: UIView {
     func setupView() {
         nibSetup()
         vwRetryContainer.addSubview(btnRetry)
+        activityIndicator.delegate = self
     }
 
     func nibSetup() {
@@ -119,17 +102,12 @@ open class HBProgressView: UIView {
     }
 
     // MARK: - Custom Methods
-    
-    open func setDefaultConfig() {
-        activityIndicator.indicatorMode = .determinate
-        activityIndicator.radius = 25
-        activityIndicator.strokeWidth = 5
-        activityIndicator.cycleColors = [.white]
-        activityIndicator.trackEnabled = true
-    }
-        
     open func setVisibleView(shouldProgressVisible: Bool) {
         vwRetryContainer.isHidden = shouldProgressVisible
         vwProgressContainer.isHidden = !shouldProgressVisible
+    }
+    
+    public func activityIndicatorAnimationDidFinish(_ activityIndicator: MDCActivityIndicator) {
+        onCompletionOfProgress?()
     }
 }
