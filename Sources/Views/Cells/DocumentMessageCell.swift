@@ -153,9 +153,19 @@ open class DocumentMessageCell: MessageContentCell {
             } else if messageProgressView.btnRetry.frame.contains(touchLocation) {
                 delegateProgress?.didTapRetryProgress(in: self)
             } else {
+                let touchLocation = gesture.location(in: messageContainerView)
+                guard messageContainerView.frame.contains(touchLocation) else {
+                    super.handleTapGesture(gesture)
+                    return
+                }
                 delegate?.didTapDocument(in: self)
             }
         } else {
+            let touchLocation = gesture.location(in: messageContainerView)
+            guard messageContainerView.frame.contains(touchLocation) else {
+                super.handleTapGesture(gesture)
+                return
+            }
             delegate?.didTapDocument(in: self)
         }
     }
