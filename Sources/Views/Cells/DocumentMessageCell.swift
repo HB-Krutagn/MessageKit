@@ -220,6 +220,7 @@ open class DocumentMessageCell: MessageContentCell {
                 nameLabel.text = "unknown"
                 pictureView.image = QLPreviewHelper.getDocThumbnail(docUrl: nil, fileName: "unknown")
             }
+            progressPercentage = item.mediaProgress
         default:
             break
         }
@@ -235,6 +236,9 @@ open class DocumentMessageCell: MessageContentCell {
         messageProgressView.onCompletionOfProgress = { [weak self] in
             guard let weakSelf = self else { return }
             weakSelf.messageProgressView.isHidden = true
+        }
+        if currentProgress >= 1.0 || currentProgress <= 0.0 {
+            messageProgressView.isHidden = true
         }
     }
 }
