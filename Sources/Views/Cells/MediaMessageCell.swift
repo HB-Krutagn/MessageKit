@@ -130,23 +130,14 @@ open class MediaMessageCell: MessageContentCell {
         case .photo(let mediaItem):
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
             playButtonView.isHidden = true
-            messageProgressView.isHidden = false
             progressPercentage = mediaItem.mediaProgress
-            if mediaItem.mediaProgress >= 1.0 || mediaItem.mediaProgress <= 0.0 {
-                messageProgressView.isHidden = true
-            }
         case .video(let mediaItem):
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
             playButtonView.isHidden = false
-            messageProgressView.isHidden = false
             progressPercentage = mediaItem.mediaProgress
-            if mediaItem.mediaProgress >= 1.0 || mediaItem.mediaProgress <= 0.0 {
-                messageProgressView.isHidden = true
-            }
         default:
             break
         }
-        
         displayDelegate.configureMediaMessageImageView(imageView, for: message, at: indexPath, in: messagesCollectionView)
     }
     
@@ -186,6 +177,9 @@ open class MediaMessageCell: MessageContentCell {
         messageProgressView.onCompletionOfProgress = { [weak self] in
             guard let weakSelf = self else { return }
             weakSelf.messageProgressView.isHidden = true
+        }
+        if currentProgress >= 1.0 || currentProgress <= 0.0 {
+            messageProgressView.isHidden = true
         }
     }
 }
