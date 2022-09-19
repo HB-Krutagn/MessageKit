@@ -22,5 +22,7 @@ public protocol DocumentItem {
 
     /// The size of the media item.
     var size: CGSize { get }
-
+    
+    /// The progress of the media item.
+    var mediaProgress: Float { get }
 }
