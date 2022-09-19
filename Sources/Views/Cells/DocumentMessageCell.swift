@@ -209,7 +209,7 @@ open class DocumentMessageCell: MessageContentCell {
             containerRightConstraint?.constant = -6
             containerTopConstraint?.constant = 6
             containerBottomConstraint?.constant = -6
-            innerView.backgroundColor = UIColor.white
+            innerView.backgroundColor = UIColor.incomingInner
         }
 //
 //        let textColor = displayDelegate.textColor(for: message, at: indexPath, in: messagesCollectionView)
