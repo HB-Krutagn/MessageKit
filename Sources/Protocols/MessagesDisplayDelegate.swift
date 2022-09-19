@@ -254,6 +254,8 @@ public protocol MessagesDisplayDelegate: AnyObject {
     for message: MessageType,
     at indexPath: IndexPath,
     in messagesCollectionView: MessagesCollectionView)
+    
+  func setProgressPercentage(_ progress: Float, for _: MessageContentCell, in _: MessagesCollectionView)
 }
 
 extension MessagesDisplayDelegate {
@@ -404,4 +406,7 @@ extension MessagesDisplayDelegate {
     for _: MessageType,
     at _: IndexPath,
     in _: MessagesCollectionView) { }
+    
+  // MARK: - Progress Percentage of Media
+    public func setProgressPercentage(_ progress: Float, for _: MessageContentCell, in _: MessagesCollectionView) { }
 }
