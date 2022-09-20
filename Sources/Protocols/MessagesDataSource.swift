@@ -207,7 +207,7 @@ public protocol MessagesDataSource: AnyObject {
   /// - Note:
   ///   This method will call fatalError() on default. You must override this method if you are using MessageKind.custom messages.
   func systemMessageCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
-      -> UICollectionViewCell
+      -> UICollectionViewCell?
     
   /// Typing indicator cell used when the indicator is set to be shown
   ///
@@ -285,7 +285,7 @@ extension MessagesDataSource {
     fatalError(MessageKitError.customDataUnresolvedCell)
   }
     
-  public func systemMessageCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UICollectionViewCell {
+  public func systemMessageCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UICollectionViewCell? {
       messagesCollectionView.dequeueReusableCell(SystemMessageCell.self, for: indexPath)
   }
 
