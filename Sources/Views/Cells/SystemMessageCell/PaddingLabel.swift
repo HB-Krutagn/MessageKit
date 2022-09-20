@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-@IBDesignable open class PaddingLabel: UILabel {
+@IBDesignable class PaddingLabel: UILabel {
     
     var topInset: CGFloat = 0.0
     var bottomInset: CGFloat = 0.0
