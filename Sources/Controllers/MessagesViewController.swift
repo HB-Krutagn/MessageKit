@@ -187,7 +187,14 @@ open class MessagesViewController: UIViewController, UICollectionViewDelegateFlo
 //       cell.configure(with: message, at: indexPath, and: messagesCollectionView)
 //     return cell
     case .systemMessage:
-        return messagesDataSource.systemMessageCell(for: message, at: indexPath, in: messagesCollectionView)
+        if let cell = messagesDataSource.systemMessageCell(for: message, at: indexPath, in: messagesCollectionView) {
+            (cell as? SystemMessageCell)?.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        } else {
+            let cell = messagesCollectionView.dequeueReusableCell(withReuseIdentifier: "SystemMessageCell", for: indexPath) as? SystemMessageCell
+            cell?.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell ?? UICollectionViewCell()
+        }
     case .custom, .reply:
       return messagesDataSource.customCell(for: message, at: indexPath, in: messagesCollectionView)
     }
