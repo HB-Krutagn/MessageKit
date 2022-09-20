@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MessageKit
 
 open class SystemMessageCell: UICollectionViewCell {
     @IBOutlet weak var lblMessage: PaddingLabel!
