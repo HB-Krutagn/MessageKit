@@ -62,6 +62,9 @@ public enum MessageKind {
 
   /// A reply message.
   case reply(ReplyItem)
+  
+  /// A system message.
+  case systemMessage(String)
 
   /// A custom message.
   /// - Note: Using this case requires that you implement the following methods and handle this case:
