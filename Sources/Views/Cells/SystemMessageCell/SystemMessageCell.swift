@@ -7,10 +7,8 @@
 
 import UIKit
 import Foundation
-open class SystemMessageCell: UICollectionViewCell {    
-    static let bundle = Bundle(for: SystemMessageCell.self)
-    static let nib = UINib(nibName: String(describing: type(of: self)), bundle: bundle)
-
+open class SystemMessageCell: UICollectionViewCell {
+    
     @IBOutlet weak var lblMessage: PaddingLabel!
     
     open override func awakeFromNib() {
@@ -20,8 +18,7 @@ open class SystemMessageCell: UICollectionViewCell {
         lblMessage.clipsToBounds = true
     }
     
-    open func configure(with message: MessageType, at _: IndexPath, and _: MessagesCollectionView) {
-        // Do stuff
+    open func configure(with message: MessageType, at indexPath: IndexPath, and messagesCollectionView: MessagesCollectionView) {
         switch message.kind {
         case .systemMessage(let data):
             if let systemMessage = data as? String {
