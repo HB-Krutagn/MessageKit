@@ -308,6 +308,20 @@ public protocol MessagesLayoutDelegate: AnyObject {
       at indexPath: IndexPath,
       in messagesCollectionView: MessagesCollectionView) -> CellSizeCalculator?
 
+    /// System cell size calculator for messages with MessageType.emoji.
+    ///
+    /// - Parameters:
+    ///   - message: The system message
+    ///   - indexPath: The `IndexPath` of the cell.
+    ///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+    ///
+    /// - Note:
+    ///   The default implementation will return nil. You must override this method if you are using your own cell for messages with MessageType.emoji.
+    func systemMessageCellSizeCalculator(
+      for message: MessageType,
+      at indexPath: IndexPath,
+      in messagesCollectionView: MessagesCollectionView) -> CellSizeCalculator?
+
 }
 
 extension MessagesLayoutDelegate {
@@ -456,5 +470,13 @@ extension MessagesLayoutDelegate {
   {
     nil
   }
-
+    
+  public func systemMessageCellSizeCalculator(
+    for message: MessageType,
+    at indexPath: IndexPath,
+    in messagesCollectionView: MessagesCollectionView) -> CellSizeCalculator?
+    {
+        nil
+    }
+    
 }
