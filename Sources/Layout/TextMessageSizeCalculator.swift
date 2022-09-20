@@ -52,7 +52,12 @@ open class TextMessageSizeCalculator: MessageSizeCalculator {
 
     let messageInsets = messageLabelInsets(for: message)
     messageContainerSize.width += messageInsets.horizontal
-    messageContainerSize.height += messageInsets.vertical
+      switch textMessageKind {
+      case .systemMessage(let text):
+        messageContainerSize.height += 0
+      default:
+        messageContainerSize.height += messageInsets.vertical
+      }
 
     return messageContainerSize
   }
