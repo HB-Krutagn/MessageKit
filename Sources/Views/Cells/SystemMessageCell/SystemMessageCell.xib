@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="segoeui-symbol.ttf">
+            <string>SegoeUISymbol</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SystemMessageCell" id="gTV-IL-0wX" customClass="SystemMessageCell" customModule="qtconnect" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="255" height="40"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="255" height="40"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TGd-HF-GPD">
+                        <rect key="frame" x="0.0" y="0.0" width="255" height="40"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QTConnect" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNM-f2-Jke" customClass="PaddingLabel" customModule="qtconnect" customModuleProvider="target">
+                                <rect key="frame" x="89" y="5" width="77" height="30"/>
+                                <color key="backgroundColor" red="0.77647058820000003" green="0.86666666670000003" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="HmB-Aw-GVl"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SegoeUISymbol" family="Segoe UI Symbol" pointSize="15"/>
+                                <color key="textColor" red="0.36470588240000001" green="0.36470588240000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="wNM-f2-Jke" secondAttribute="bottom" constant="5" id="KVx-I7-nPI"/>
+                            <constraint firstItem="wNM-f2-Jke" firstAttribute="centerX" secondItem="TGd-HF-GPD" secondAttribute="centerX" id="p8V-rQ-kYZ"/>
+                            <constraint firstItem="wNM-f2-Jke" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TGd-HF-GPD" secondAttribute="leading" constant="20" id="rix-Wa-9jn"/>
+                            <constraint firstItem="wNM-f2-Jke" firstAttribute="top" secondItem="TGd-HF-GPD" secondAttribute="top" constant="5" id="wfa-Bb-8lk"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="TGd-HF-GPD" secondAttribute="bottom" id="0t4-pr-cN3"/>
+                <constraint firstItem="TGd-HF-GPD" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="5dC-ll-SLK"/>
+                <constraint firstAttribute="trailing" secondItem="TGd-HF-GPD" secondAttribute="trailing" id="5mG-1h-Ddq"/>
+                <constraint firstItem="TGd-HF-GPD" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Ldg-3G-7eg"/>
+            </constraints>
+            <size key="customSize" width="255" height="50"/>
+            <connections>
+                <outlet property="lblMessage" destination="wNM-f2-Jke" id="sJx-ga-oHK"/>
+            </connections>
+            <point key="canvasLocation" x="286.23188405797106" y="63.616071428571423"/>
+        </collectionViewCell>
+    </objects>
+    <designables>
+        <designable name="wNM-f2-Jke">
+            <size key="intrinsicContentSize" width="77" height="17.5"/>
+        </designable>
+    </designables>
+</document>
