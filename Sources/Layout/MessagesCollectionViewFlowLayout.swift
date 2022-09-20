@@ -71,7 +71,7 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
   lazy open var typingIndicatorSizeCalculator = TypingCellSizeCalculator(layout: self)
   lazy open var linkPreviewMessageSizeCalculator = LinkPreviewMessageSizeCalculator(layout: self)
   lazy open var documentMessageSizeCalculator = DocumentMessageSizeCalculator(layout: self)
-
+  lazy open var systemMessageSizeCalculator = TextMessageSizeCalculator(layout: self)
 
   /// A method that by default checks if the section is the last in the
   /// `messagesCollectionView` and that `isTypingIndicatorViewHidden`
@@ -168,7 +168,8 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
       return messagesLayoutDelegate
         .replyCellSizeCalculator(for: message, at: indexPath, in: messagesCollectionView) ?? messagesLayoutDelegate.customCellSizeCalculator(for: message, at: indexPath, in: messagesCollectionView)
     case .systemMessage:
-        return messagesLayoutDelegate.customCellSizeCalculator(for: message, at: indexPath, in: messagesCollectionView)
+        return messagesLayoutDelegate
+          .textCellSizeCalculator(for: message, at: indexPath, in: messagesCollectionView) ?? systemMessageSizeCalculator
     case .custom:
       return messagesLayoutDelegate.customCellSizeCalculator(for: message, at: indexPath, in: messagesCollectionView)
     }
@@ -192,6 +193,7 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
       contactMessageSizeCalculator,
       linkPreviewMessageSizeCalculator,
       documentMessageSizeCalculator,
+      systemMessageSizeCalculator,
     ]
   }
 
