@@ -186,6 +186,8 @@ open class MessagesViewController: UIViewController, UICollectionViewDelegateFlo
 //       cell.indexPath = indexPath
 //       cell.configure(with: message, at: indexPath, and: messagesCollectionView)
 //     return cell
+    case .systemMessage:
+        return messagesDataSource.systemMessageCell(for: message, at: indexPath, in: messagesCollectionView)
     case .custom, .reply:
       return messagesDataSource.customCell(for: message, at: indexPath, in: messagesCollectionView)
     }
