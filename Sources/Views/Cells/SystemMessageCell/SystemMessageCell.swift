@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import Foundation
+open class SystemMessageCell: UICollectionViewCell {    
+    static let bundle = Bundle(for: SystemMessageCell.self)
+    static let nib = UINib(nibName: String(describing: type(of: self)), bundle: bundle)
 
-open class SystemMessageCell: UICollectionViewCell {
     @IBOutlet weak var lblMessage: PaddingLabel!
     
     open override func awakeFromNib() {
