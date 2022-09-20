@@ -218,7 +218,10 @@ open class MessagesCollectionView: UICollectionView {
     register(MessageReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader)
     register(MessageReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter)
     register(DocumentMessageCell.self)
-    register(SystemMessageCell.self)
+      
+    let podBundle = Bundle(for: SystemMessageCell.self)
+    let collectionViewNib = UINib(nibName: "SystemMessageCell", bundle: podBundle)
+    self.register(collectionViewNib, forCellWithReuseIdentifier: "SystemMessageCell")
   }
 
   private func setupGestureRecognizers() {
