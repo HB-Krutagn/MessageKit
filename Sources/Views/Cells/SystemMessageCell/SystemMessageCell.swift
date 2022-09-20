@@ -20,7 +20,7 @@ open class SystemMessageCell: UICollectionViewCell {
     open func configure(with message: MessageType, at _: IndexPath, and _: MessagesCollectionView) {
         // Do stuff
         switch message.kind {
-        case .custom(let data):
+        case .systemMessage(let data):
             if let systemMessage = data as? String {
                 lblMessage.text = systemMessage
             } else if let systemMessage = data as? NSAttributedString {
