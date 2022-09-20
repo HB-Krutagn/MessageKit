@@ -15,7 +15,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SystemMessageCell" id="gTV-IL-0wX" customClass="SystemMessageCell" customModule="qtconnect" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SystemMessageCell" id="gTV-IL-0wX" customClass="SystemMessageCell" customModule="MessageKit" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="255" height="40"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -25,8 +25,8 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TGd-HF-GPD">
                         <rect key="frame" x="0.0" y="0.0" width="255" height="40"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QTConnect" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNM-f2-Jke" customClass="PaddingLabel" customModule="qtconnect" customModuleProvider="target">
-                                <rect key="frame" x="89" y="5" width="77" height="30"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QTConnect" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNM-f2-Jke" customClass="PaddingLabel" customModule="MessageKit" customModuleProvider="target">
+                                <rect key="frame" x="91" y="5" width="73" height="30"/>
                                 <color key="backgroundColor" red="0.77647058820000003" green="0.86666666670000003" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="HmB-Aw-GVl"/>
@@ -55,14 +55,14 @@
             </constraints>
             <size key="customSize" width="255" height="50"/>
             <connections>
-                <outlet property="lblMessage" destination="wNM-f2-Jke" id="sJx-ga-oHK"/>
+                <outlet property="lblMessage" destination="wNM-f2-Jke" id="Hcg-nR-Jzb"/>
             </connections>
             <point key="canvasLocation" x="286.23188405797106" y="63.616071428571423"/>
         </collectionViewCell>
     </objects>
     <designables>
         <designable name="wNM-f2-Jke">
-            <size key="intrinsicContentSize" width="77" height="17.5"/>
+            <size key="intrinsicContentSize" width="73" height="20"/>
         </designable>
     </designables>
 </document>
