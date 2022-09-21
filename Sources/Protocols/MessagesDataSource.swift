@@ -197,6 +197,18 @@ public protocol MessagesDataSource: AnyObject {
   func documentCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
     -> UICollectionViewCell?
   
+  /// Custom collectionView cell for message with `system message` message type.
+  ///
+  /// - Parameters:
+  ///   - message: The `system message` message type
+  ///   - indexPath: The `IndexPath` of the cell.
+  ///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+  ///
+  /// - Note:
+  ///   This method will call fatalError() on default. You must override this method if you are using MessageKind.custom messages.
+  func systemMessageCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
+      -> UICollectionViewCell?
+    
   /// Typing indicator cell used when the indicator is set to be shown
   ///
   /// - Parameters:
@@ -272,16 +284,17 @@ extension MessagesDataSource {
   public func customCell(for _: MessageType, at _: IndexPath, in _: MessagesCollectionView) -> UICollectionViewCell {
     fatalError(MessageKitError.customDataUnresolvedCell)
   }
+    
+  public func systemMessageCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UICollectionViewCell? {
+      messagesCollectionView.dequeueReusableCell(SystemMessageCell.self, for: indexPath)
+  }
 
-  public func typingIndicator(
-    at indexPath: IndexPath,
-    in messagesCollectionView: MessagesCollectionView)
-    -> UICollectionViewCell
-  {
+  public func typingIndicator(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
+    -> UICollectionViewCell {
     messagesCollectionView.dequeueReusableCell(TypingIndicatorCell.self, for: indexPath)
   }
     
   public func isEditingEnabled(for message: MessageType) -> Bool {
         return false
-    }
+    }    
 }

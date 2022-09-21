@@ -54,6 +54,8 @@ open class MessagesCollectionView: UICollectionView {
   open weak var messagesLayoutDelegate: MessagesLayoutDelegate?
 
   open weak var messageCellDelegate: MessageCellDelegate?
+    
+  open weak var messageProgressDelegate: HBProgressViewDelegate?
 
   open var isTypingIndicatorHidden: Bool {
     messagesCollectionViewFlowLayout.isTypingIndicatorViewHidden
@@ -216,6 +218,10 @@ open class MessagesCollectionView: UICollectionView {
     register(MessageReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader)
     register(MessageReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter)
     register(DocumentMessageCell.self)
+      
+    let podBundle = Bundle(for: SystemMessageCell.self)
+    let collectionViewNib = UINib(nibName: "SystemMessageCell", bundle: podBundle)
+    self.register(collectionViewNib, forCellWithReuseIdentifier: "SystemMessageCell")
   }
 
   private func setupGestureRecognizers() {
@@ -224,3 +230,4 @@ open class MessagesCollectionView: UICollectionView {
     addGestureRecognizer(tapGesture)
   }
 }
+

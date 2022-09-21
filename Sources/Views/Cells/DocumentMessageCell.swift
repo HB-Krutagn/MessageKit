@@ -8,7 +8,8 @@
 
 import UIKit
 import Foundation
-import MessageKit
+import MaterialComponents.MaterialActivityIndicator
+
 /// A subclass of `MessageContentCell` used to display video and audio messages.
 open class DocumentMessageCell: MessageContentCell {
     
@@ -46,6 +47,49 @@ open class DocumentMessageCell: MessageContentCell {
         return durationLabel
     }()
 
+    open var messageProgressView: HBProgressView = {
+        let progressView = HBProgressView()
+        progressView.clipsToBounds = true
+        progressView.layer.masksToBounds = true
+        return progressView
+    }()
+
+    open var progressPercentage: Float? = nil {
+        didSet {
+            setProgress(progress: progressPercentage)
+        }
+    }
+    
+    open var progressIndicatorMode: MDCActivityIndicatorMode = .determinate {
+        didSet {
+            messageProgressView.indicatorMode = progressIndicatorMode
+        }
+    }
+    
+    open var progressIndicatorRadius: CGFloat = 20 {
+        didSet {
+            messageProgressView.indicatorRadius = progressIndicatorRadius
+        }
+    }
+    
+    open var progressIndicatorStrockWidth: CGFloat = 4.0 {
+        didSet {
+            messageProgressView.indicatorStrockWidth = progressIndicatorStrockWidth
+        }
+    }
+
+    open var progressIndicatorColor: UIColor = .white {
+        didSet {
+            messageProgressView.indicatorColor = progressIndicatorColor
+        }
+    }
+
+    open var progressIndicatorTrackEnabled: Bool = true {
+        didSet {
+            messageProgressView.indicatorTrackEnabled = progressIndicatorTrackEnabled
+        }
+    }
+
     // MARK: - Methods
 
     /// Responsible for setting up the constraints of the cell's subviews.
@@ -57,6 +101,16 @@ open class DocumentMessageCell: MessageContentCell {
         nameLabel.addConstraints(innerView.topAnchor,left: pictureView.rightAnchor,bottom: sizeLabel.topAnchor,right: innerView.rightAnchor,topConstant: 8, leftConstant: 5, rightConstant: 5)
         
         sizeLabel.addConstraints(nameLabel.bottomAnchor,left: pictureView.rightAnchor, bottom: innerView.bottomAnchor,right: innerView.rightAnchor, leftConstant: 5, bottomConstant: 8, rightConstant: 100, heightConstant: 20)
+
+        messageProgressView.addConstraints(left: pictureView.leftAnchor, centerY: pictureView.centerYAnchor, leftConstant: -3)
+        messageProgressView.constraint(equalTo: CGSize(width: 46, height: 46))
+        messageProgressView.layer.cornerRadius = 23
+
+        messageProgressView.activityIndicator.centerInSuperview()
+        messageProgressView.activityIndicator.constraint(equalTo: CGSize(width: 40, height: 40))
+
+        messageProgressView.btnRetry.centerInSuperview()
+        messageProgressView.btnRetry.constraint(equalTo: CGSize(width: 40, height: 40))
     }
 
     open override func setupSubviews() {
@@ -69,10 +123,12 @@ open class DocumentMessageCell: MessageContentCell {
         mainStackView.axis = .vertical
         mainStackView.distribution = .fill
         mainStackView.spacing = 2.0
-        self.messageContainerView.addSubview(mainStackView)
+        messageContainerView.addSubview(mainStackView)
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.addConstraints(messageContainerView.topAnchor,left: messageContainerView.leftAnchor,bottom: messageContainerView.bottomAnchor,right: messageContainerView.rightAnchor, topConstant: 5,leftConstant: 5,bottomConstant: 5,rightConstant: 5)
-        
+        messageContainerView.addSubview(messageProgressView)
+        messageProgressView.isHidden = true
+        setProgressViewConfig()
         setupConstraints()
     }
 
@@ -90,7 +146,36 @@ open class DocumentMessageCell: MessageContentCell {
 
     /// Handle tap gesture on contentView and its subviews.
     open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
-        delegate?.didTapDocument(in: self)
+        if !messageProgressView.isHidden {
+            let touchLocation = gesture.location(in: messageProgressView)
+            if messageProgressView.btnCancel.frame.contains(touchLocation) {
+                delegateProgress?.didTapCancelProgress(in: self)
+            } else if messageProgressView.btnRetry.frame.contains(touchLocation) {
+                delegateProgress?.didTapRetryProgress(in: self)
+            } else {
+                let touchLocation = gesture.location(in: messageContainerView)
+                guard messageContainerView.frame.contains(touchLocation) else {
+                    super.handleTapGesture(gesture)
+                    return
+                }
+                delegate?.didTapDocument(in: self)
+            }
+        } else {
+            let touchLocation = gesture.location(in: messageContainerView)
+            guard messageContainerView.frame.contains(touchLocation) else {
+                super.handleTapGesture(gesture)
+                return
+            }
+            delegate?.didTapDocument(in: self)
+        }
+    }
+
+    func setProgressViewConfig() {
+        messageProgressView.indicatorMode = progressIndicatorMode
+        messageProgressView.indicatorRadius = progressIndicatorRadius
+        messageProgressView.indicatorStrockWidth = progressIndicatorStrockWidth
+        messageProgressView.indicatorColor = progressIndicatorColor
+        messageProgressView.indicatorTrackEnabled = progressIndicatorTrackEnabled
     }
 
     // MARK: - Configure Cell
@@ -104,7 +189,7 @@ open class DocumentMessageCell: MessageContentCell {
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
             fatalError("MessageKitError.nilMessagesDisplayDelegate")
         }
-        
+
         let atribitedDateString = messagesCollectionView.messagesDataSource?.messageBottomLabelAttributedText(for: message, at: indexPath)
         let isCurrentUser = dataSource.isFromCurrentSender(message: message)
         let containerLeftConstraint = messageContainerView.constraints.filter { $0.identifier == "left" }.first
@@ -124,7 +209,7 @@ open class DocumentMessageCell: MessageContentCell {
             containerRightConstraint?.constant = -6
             containerTopConstraint?.constant = 6
             containerBottomConstraint?.constant = -6
-            innerView.backgroundColor = UIColor.white
+            innerView.backgroundColor = UIColor.incomingInner
         }
 //
 //        let textColor = displayDelegate.textColor(for: message, at: indexPath, in: messagesCollectionView)
@@ -145,8 +230,25 @@ open class DocumentMessageCell: MessageContentCell {
                 nameLabel.text = "unknown"
                 pictureView.image = QLPreviewHelper.getDocThumbnail(docUrl: nil, fileName: "unknown")
             }
+            progressPercentage = item.mediaProgress
         default:
             break
+        }
+    }
+    
+    private func setProgress(progress: Float?) {
+        guard let currentProgress = progress else {
+            messageProgressView.isHidden = true
+            return
+        }
+        messageProgressView.isHidden = false
+        messageProgressView.progress = currentProgress
+        messageProgressView.onCompletionOfProgress = { [weak self] in
+            guard let weakSelf = self else { return }
+            weakSelf.messageProgressView.isHidden = true
+        }
+        if currentProgress >= 1.0 || currentProgress <= 0.0 {
+            messageProgressView.isHidden = true
         }
     }
 }

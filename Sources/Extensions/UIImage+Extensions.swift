@@ -57,11 +57,15 @@ public enum ImageType: String {
   case video
   case word
   case zip
+  case music
+  case mp3
+  case mp4
+  case mail
 }
 
 /// This extension provide a way to access image resources with in framework
 extension UIImage {
-  internal static func messageKitImageWith(type: ImageType) -> UIImage? {
+  public static func messageKitImageWith(type: ImageType) -> UIImage? {
     UIImage(named: type.rawValue, in: Bundle.messageKitAssetBundle, compatibleWith: nil)
   }
 }
