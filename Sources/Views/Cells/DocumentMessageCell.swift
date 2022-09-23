@@ -201,17 +201,15 @@ open class DocumentMessageCell: MessageContentCell {
             containerRightConstraint?.constant = -6
             containerTopConstraint?.constant = 6
             containerBottomConstraint?.constant = -6
-            innerView.backgroundColor = UIColor.outgoingInner
-            innerView.addConstraints(heightConstant: 65)
         } else {
-            innerView.addConstraints(heightConstant: 65)
             containerLeftConstraint?.constant = 6
             containerRightConstraint?.constant = -6
             containerTopConstraint?.constant = 6
             containerBottomConstraint?.constant = -6
-            innerView.backgroundColor = UIColor.incomingInner
         }
-//
+        innerView.addConstraints(heightConstant: 65)
+        innerView.backgroundColor = displayDelegate.innerViewBackgroundColor(for: message, at: indexPath, in: messagesCollectionView)
+
 //        let textColor = displayDelegate.textColor(for: message, at: indexPath, in: messagesCollectionView)
 //        nameLabel.textColor = textColor
         nameLabel.textColor = .darkText
