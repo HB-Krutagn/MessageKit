@@ -8,7 +8,6 @@
 
 import UIKit
 import Foundation
-import MessageKit
 
 open class ReplyMessageSizeCalculator: MessageSizeCalculator {
     
@@ -25,7 +24,7 @@ open class ReplyMessageSizeCalculator: MessageSizeCalculator {
             if item.itemType == "text" {
                 if !(item.text ?? "").isEmpty {
                     let font = UIFont.systemFont(ofSize: 16.0, weight: .regular) //UIFont(name: FontName.Regular.rawValue, size: IS_iPAD ? 18.0 : 16.0) ?? .systemFont(ofSize: IS_iPAD ? 18.0: 16.0)
-                    lHeight += UILabel.heightForView(text: (item.text ?? ""), font: font, width: maxWidth) + 5.0
+                    lHeight += heightForView(text: (item.text ?? ""), font: font, width: maxWidth) + 5.0
                     return CGSize(width: getMaxWidthForTextMessageType(for: message, at: indexPath, text: item.text ?? ""), height: 95 + lHeight)
                 } else {
                     return CGSize(width: maxWidth, height: 95 + lHeight)
@@ -34,7 +33,7 @@ open class ReplyMessageSizeCalculator: MessageSizeCalculator {
                 var captionHeight: CGFloat = 0
                 if !(item.text ?? "").isEmpty {
                     let font = UIFont.systemFont(ofSize: 16.0, weight: .regular)//UIFont(name: FontName.Regular.rawValue, size: IS_iPAD ? 18.0: 16.0) ?? .systemFont(ofSize: IS_iPAD ? 18.0: 16.0)
-                    captionHeight = UILabel.heightForView(text: (item.text ?? ""), font: font, width: 260) + 10.0
+                    captionHeight = heightForView(text: (item.text ?? ""), font: font, width: 260) + 10.0
                     return CGSize(width: 260, height: 100 + 260 + captionHeight + lHeight)
                 } else {
                     return CGSize(width: 260, height: 100 + 260 + lHeight)
@@ -110,6 +109,14 @@ open class ReplyMessageSizeCalculator: MessageSizeCalculator {
             break
         }
         return 0
+    }
+
+        
+    func heightForView(text: String, font: UIFont, width: CGFloat) -> CGFloat{
+        let attributedText = NSAttributedString(string: text, attributes: [.font: font])
+        let framesetter = CTFramesetterCreateWithAttributedString(attributedText)
+        let size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRange(location: 0,length: 0), nil, CGSize(width: width, height: .greatestFiniteMagnitude), nil)
+        return size.height
     }
 
 }
