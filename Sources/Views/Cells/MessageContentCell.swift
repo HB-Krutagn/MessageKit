@@ -114,6 +114,17 @@ open class MessageContentCell: MessageCollectionViewCell {
       avatarView,
       messageTimestampLabel)
   }
+    
+    //Highlight cell from reply view
+    public func highlightCellForReply(sCount : Int = 0) {
+        UIView.animate(withDuration : 0.5, delay: 0.0, options: UIView.AnimationOptions.curveEaseOut, animations: {() -> Void in
+            self.alpha = 0.2
+        }, completion: {(finished: Bool) -> Void in
+            if finished == true {
+                self.alpha = 1.0
+            }
+        })
+    }
 
   // MARK: - Configuration
 
