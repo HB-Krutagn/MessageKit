@@ -21,29 +21,31 @@ open class ReplyMessageSizeCalculator: MessageSizeCalculator {
         let maxWidth = messageContainerMaxWidth(for: message, at: indexPath)
         switch message.kind {
         case .reply(let item):
-            if item.itemType == "text" {
+            switch item.replyKind {
+            case .text:
                 if !(item.text ?? "").isEmpty {
                     let font = UIFont.systemFont(ofSize: 16.0, weight: .regular) //UIFont(name: FontName.Regular.rawValue, size: IS_iPAD ? 18.0 : 16.0) ?? .systemFont(ofSize: IS_iPAD ? 18.0: 16.0)
                     lHeight += heightForView(text: (item.text ?? ""), font: font, width: maxWidth) + 5.0
-                    return CGSize(width: getMaxWidthForTextMessageType(for: message, at: indexPath, text: item.text ?? ""), height: 95 + lHeight)
+                    return CGSize(width: getMaxWidthForTextMessageType(for: message, at: indexPath, text: item.text ?? ""), height: 80 + lHeight)
                 } else {
                     return CGSize(width: maxWidth, height: 95 + lHeight)
                 }
-            } else if item.itemType == "image" || item.itemType == "video" {
+            case .photo, .video:
                 var captionHeight: CGFloat = 0
                 if !(item.text ?? "").isEmpty {
                     let font = UIFont.systemFont(ofSize: 16.0, weight: .regular)//UIFont(name: FontName.Regular.rawValue, size: IS_iPAD ? 18.0: 16.0) ?? .systemFont(ofSize: IS_iPAD ? 18.0: 16.0)
-                    captionHeight = heightForView(text: (item.text ?? ""), font: font, width: 260) + 10.0
-                    return CGSize(width: 260, height: 100 + 260 + captionHeight + lHeight)
+                    captionHeight = heightForView(text: (item.text ?? ""), font: font, width: 240) + 10.0
+                    return CGSize(width: 240, height: 60 + 240 + captionHeight + lHeight)
                 } else {
-                    return CGSize(width: 260, height: 100 + 260 + lHeight)
+                    return CGSize(width: 240, height: 60 + 240 + lHeight)
                 }
-            } else if item.itemType == "document" || item.itemType == "doc" {
-                return CGSize(width: 260, height: 80 + 60 + lHeight)
-            } else if item.itemType == "audio" {
-                return CGSize(width: 260, height: 80 + 60 + lHeight)
-            } else {}
-            return CGSize(width: maxWidth, height: 120 + lHeight)//item.size
+            case .document:
+                return CGSize(width: 250, height: 70 + 60 + lHeight)
+            case .audio:
+                return CGSize(width: 250, height: 70 + 60 + lHeight)
+            default:
+                return CGSize(width: maxWidth, height: 120 + lHeight)
+            }
         default:
             fatalError("messageContainerSize received unhandled MessageDataType: \(message.kind)")
         }
@@ -93,26 +95,25 @@ open class ReplyMessageSizeCalculator: MessageSizeCalculator {
         case .reply(let item):
             switch item.replyKind {
             case .text( _):
-                return 0
+                return 150
             case .photo( _):
-                fallthrough
+                return 150
             case .video( _):
-                fallthrough
+                return 150
             case .audio( _):
-                fallthrough
+                return 150
             case .document( _):
                 return 150
             default:
-                return 0
+                return 150
             }
         default:
             break
         }
-        return 0
+        return 150
     }
-
         
-    func heightForView(text: String, font: UIFont, width: CGFloat) -> CGFloat{
+    func heightForView(text: String, font: UIFont, width: CGFloat) -> CGFloat {
         let attributedText = NSAttributedString(string: text, attributes: [.font: font])
         let framesetter = CTFramesetterCreateWithAttributedString(attributedText)
         let size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRange(location: 0,length: 0), nil, CGSize(width: width, height: .greatestFiniteMagnitude), nil)
