@@ -14,9 +14,16 @@ open class HBProgressView: UIView, MDCActivityIndicatorDelegate {
     @IBOutlet weak var stackVW: UIStackView!
     @IBOutlet weak var vwProgressContainer: UIView!
     @IBOutlet weak var activityIndicator: MDCActivityIndicator!
-    @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var vwRetryContainer: UIView!
 
+    public lazy var btnCancel: UIButton = {
+        let btn = UIButton()
+        if let image = UIImage(named: "ic_cancel_white", in: Bundle.messageKitAssetBundle, compatibleWith: nil) {
+            btn.setImage(image, for: .normal)
+        }
+        return btn
+    }()
+    
     public lazy var btnRetry: UIButton = {
         let btn = UIButton()
         if let image = UIImage(named: "retry", in: Bundle.messageKitAssetBundle, compatibleWith: nil) {
@@ -24,10 +31,10 @@ open class HBProgressView: UIView, MDCActivityIndicatorDelegate {
         }
         return btn
     }()
-    var onCompletionOfProgress  : (() -> ())?
+    public var onCompletionOfProgress  : (() -> ())?
     
     // MARK: - Variables
-    var progress: Float = 0.0 {
+    public var progress: Float = 0.0 {
         didSet {
             activityIndicator.setProgress(progress, animated: false)
             if progress >= 1.0 || progress <= 0.0 {
@@ -38,31 +45,31 @@ open class HBProgressView: UIView, MDCActivityIndicatorDelegate {
         }
     }
         
-    var indicatorMode: MDCActivityIndicatorMode = .determinate {
+    public var indicatorMode: MDCActivityIndicatorMode = .determinate {
         didSet {
             activityIndicator.indicatorMode = indicatorMode
         }
     }
     
-    var indicatorRadius: CGFloat = 25 {
+    public var indicatorRadius: CGFloat = 25 {
         didSet {
             activityIndicator.radius = indicatorRadius
         }
     }
     
-    var indicatorStrockWidth: CGFloat = 5.0 {
+    public var indicatorStrockWidth: CGFloat = 5.0 {
         didSet {
             activityIndicator.strokeWidth = indicatorStrockWidth
         }
     }
 
-    var indicatorColor: UIColor = .white {
+    public var indicatorColor: UIColor = .white {
         didSet {
             activityIndicator.cycleColors = [indicatorColor]
         }
     }
 
-    var indicatorTrackEnabled: Bool = true {
+    public var indicatorTrackEnabled: Bool = true {
         didSet {
             activityIndicator.trackEnabled = indicatorTrackEnabled
         }
@@ -82,6 +89,10 @@ open class HBProgressView: UIView, MDCActivityIndicatorDelegate {
 
     func setupView() {
         nibSetup()
+        vwProgressContainer.addSubview(btnCancel)
+        btnCancel.frame = activityIndicator.bounds
+        btnCancel.centerInSuperview()
+        vwProgressContainer.bringSubviewToFront(btnCancel)
         vwRetryContainer.addSubview(btnRetry)
         activityIndicator.delegate = self
     }
