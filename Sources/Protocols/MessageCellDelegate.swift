@@ -167,6 +167,10 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
   /// `indexPath(for: cell)` method. Then using the returned `IndexPath` with the `MessagesDataSource`
   /// method `messageForItem(at:indexPath:messagesCollectionView)`.
   func didTapDocument(in cell: DocumentMessageCell)
+    
+  func didTapReplyBottomMessage(in cell: MessageCollectionViewCell)
+    
+  func didTapReplyAudioPlayButton(in cell: MessageCollectionViewCell)
 }
 
 extension MessageCellDelegate {
@@ -197,4 +201,9 @@ extension MessageCellDelegate {
   public func didTapAccessoryView(in _: MessageCollectionViewCell) { }
     
   public func didTapDocument(in _: DocumentMessageCell) { }
+    
+  public func didTapReplyBottomMessage(in _: MessageCollectionViewCell) { }
+      
+  public func didTapReplyAudioPlayButton(in _: MessageCollectionViewCell) { }
+
 }
