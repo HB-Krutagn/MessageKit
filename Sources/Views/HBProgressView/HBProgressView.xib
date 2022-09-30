@@ -11,7 +11,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HBProgressView" customModule="MessageKit" customModuleProvider="target">
             <connections>
                 <outlet property="activityIndicator" destination="LZX-wL-u8k" id="92w-jl-iXP"/>
-                <outlet property="btnCancel" destination="iwg-1T-B9m" id="afj-OF-f4i"/>
                 <outlet property="stackVW" destination="Y43-QR-TuE" id="Cf6-kP-UnB"/>
                 <outlet property="vwProgressContainer" destination="SO9-fa-IfO" id="yWn-Rh-ywi"/>
                 <outlet property="vwRetryContainer" destination="vC2-rp-eBa" id="VG4-oM-mzo"/>
@@ -44,23 +43,11 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iwg-1T-B9m">
-                                            <rect key="frame" x="83" y="57" width="50" height="50"/>
-                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                            <state key="normal" image="ic_cancel_white"/>
-                                            <connections>
-                                                <action selector="btnCancelClicked:" destination="-1" eventType="touchUpInside" id="JfN-11-3Jv"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstItem="iwg-1T-B9m" firstAttribute="leading" secondItem="LZX-wL-u8k" secondAttribute="leading" id="F0Z-pd-i8R"/>
-                                        <constraint firstItem="iwg-1T-B9m" firstAttribute="top" secondItem="LZX-wL-u8k" secondAttribute="top" id="FSQ-sb-Nue"/>
                                         <constraint firstItem="LZX-wL-u8k" firstAttribute="centerX" secondItem="SO9-fa-IfO" secondAttribute="centerX" priority="250" id="aD6-ra-wbR"/>
                                         <constraint firstItem="LZX-wL-u8k" firstAttribute="centerY" secondItem="SO9-fa-IfO" secondAttribute="centerY" id="nMq-e2-dU2"/>
-                                        <constraint firstItem="iwg-1T-B9m" firstAttribute="bottom" secondItem="LZX-wL-u8k" secondAttribute="bottom" id="ptO-Ep-O23"/>
-                                        <constraint firstItem="iwg-1T-B9m" firstAttribute="trailing" secondItem="LZX-wL-u8k" secondAttribute="trailing" id="vGk-LQ-wDW"/>
                                     </constraints>
                                 </view>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vC2-rp-eBa">
@@ -91,7 +78,4 @@
             <point key="canvasLocation" x="73.913043478260875" y="-129.61956521739131"/>
         </view>
     </objects>
-    <resources>
-        <image name="ic_cancel_white" width="33" height="33"/>
-    </resources>
 </document>
