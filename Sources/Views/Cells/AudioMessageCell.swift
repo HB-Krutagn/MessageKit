@@ -22,7 +22,7 @@
 
 import AVFoundation
 import UIKit
-
+import AVKit
 /// A subclass of `MessageContentCell` used to display video and audio messages.
 open class AudioMessageCell: MessageContentCell {
   // MARK: Open
@@ -115,16 +115,50 @@ open class AudioMessageCell: MessageContentCell {
     playButton.imageView?.tintColor = tintColor
     durationLabel.textColor = tintColor
     progressView.tintColor = tintColor
-
+      
     if case .audio(let audioItem) = message.kind {
-      durationLabel.text = displayDelegate.audioProgressTextFormat(
-        audioItem.duration,
-        for: self,
-        in: messagesCollectionView)
+    setDurationOfAudio(audioURL: audioItem.url)
+//      durationLabel.text = displayDelegate.audioProgressTextFormat(
+//        audioItem.duration,
+//        for: self,
+//        in: messagesCollectionView)
     }
-
-    displayDelegate.configureAudioCell(self, message: message)
   }
+
+    func setDurationOfAudio(audioURL: URL) {
+        let audioAsset = AVURLAsset.init(url: audioURL, options: nil)
+        audioAsset.loadValuesAsynchronously(forKeys: ["duration"]) {
+            var error: NSError? = nil
+            let status = audioAsset.statusOfValue(forKey: "duration", error: &error)
+            switch status {
+            case .loaded: // Sucessfully loaded. Continue processing.
+                let duration = audioAsset.duration
+                let durationInSeconds = CMTimeGetSeconds(duration)
+                print(Int(durationInSeconds))
+                var returnValue = "0:00"
+                if durationInSeconds < 60 {
+                    returnValue = String(format: "0:%.02d", Int(durationInSeconds.rounded(.up)))
+                } else if durationInSeconds < 3600 {
+                    returnValue = String(format: "%.02d:%.02d", Int(durationInSeconds/60), Int(durationInSeconds) % 60)
+                } else {
+                    let hours = Int(durationInSeconds/3600)
+                    let remainingMinutesInSeconds = Int(durationInSeconds) - hours*3600
+                    returnValue = String(format: "%.02d:%.02d:%.02d", hours, Int(remainingMinutesInSeconds/60), Int(remainingMinutesInSeconds) % 60)
+                }
+                DispatchQueue.main.async {
+                    self.durationLabel.text = returnValue
+                }
+                break
+            case .failed:
+                break // Handle error
+            case .cancelled:
+                break // Terminate processing
+            default:
+                break // Handle all other cases
+            }
+        }
+    }
+    
 
   // MARK: Public
 
