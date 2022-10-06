@@ -137,7 +137,7 @@ open class AudioMessageCell: MessageContentCell {
                 print(Int(durationInSeconds))
                 var returnValue = "00:00"
                 if durationInSeconds < 60 {
-                    returnValue = String(format: "0:%.02d", Int(durationInSeconds.rounded(.up)))
+                    returnValue = String(format: "00:%.02d", Int(durationInSeconds.rounded(.down)))
                 } else if durationInSeconds < 3600 {
                     returnValue = String(format: "%.02d:%.02d", Int(durationInSeconds/60), Int(durationInSeconds) % 60)
                 } else {
