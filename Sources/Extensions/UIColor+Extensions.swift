@@ -50,6 +50,7 @@ extension UIColor {
   
   internal static var incomingInner: UIColor { colorFromAssetBundle(named: "incomingInner") }
 
+  internal static var blueThemeColor: UIColor { colorFromAssetBundle(named: "blueThemeColor") }
   // MARK: Private
 
   private static func colorFromAssetBundle(named: String) -> UIColor {
