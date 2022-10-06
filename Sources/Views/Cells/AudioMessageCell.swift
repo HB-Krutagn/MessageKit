@@ -88,8 +88,7 @@ open class AudioMessageCell: MessageContentCell {
   open override func configure(
     with message: MessageType,
     at indexPath: IndexPath,
-    and messagesCollectionView: MessagesCollectionView)
-  {
+    and messagesCollectionView: MessagesCollectionView) {
     super.configure(with: message, at: indexPath, and: messagesCollectionView)
 
     guard let dataSource = messagesCollectionView.messagesDataSource else {
@@ -112,9 +111,9 @@ open class AudioMessageCell: MessageContentCell {
     }
 
     let tintColor = displayDelegate.audioTintColor(for: message, at: indexPath, in: messagesCollectionView)
-    playButton.imageView?.tintColor = tintColor
     durationLabel.textColor = tintColor
-    progressView.tintColor = tintColor
+//    playButton.imageView?.tintColor = tintColor
+//    progressView.tintColor = tintColor
       
     if case .audio(let audioItem) = message.kind {
     setDurationOfAudio(audioURL: audioItem.url)
@@ -192,6 +191,7 @@ open class AudioMessageCell: MessageContentCell {
   public lazy var progressView: UIProgressView = {
     let progressView = UIProgressView(progressViewStyle: .default)
     progressView.progress = 0.0
+    progressView.tintColor = UIColor.blueThemeColor
     return progressView
   }()
 }
