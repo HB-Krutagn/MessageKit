@@ -29,7 +29,7 @@ open class AudioMessageCell: MessageContentCell {
 
   /// Responsible for setting up the constraints of the cell's subviews.
   open func setupConstraints() {
-    playButton.constraint(equalTo: CGSize(width: 25, height: 25))
+    playButton.constraint(equalTo: CGSize(width: 35, height: 35))
     playButton.addConstraints(
       left: messageContainerView.leftAnchor,
       centerY: messageContainerView.centerYAnchor,
@@ -62,7 +62,7 @@ open class AudioMessageCell: MessageContentCell {
     playButton.isSelected = false
     activityIndicatorView.stopAnimating()
     playButton.isHidden = false
-    durationLabel.text = "0:00"
+    durationLabel.text = "00:00"
   }
 
   /// Handle tap gesture on contentView and its subviews.
@@ -166,9 +166,10 @@ open class AudioMessageCell: MessageContentCell {
     let playButton = UIButton(type: .custom)
     let playImage = UIImage.messageKitImageWith(type: .audioPlay)?.withTintColor(.white)
     let pauseImage = UIImage.messageKitImageWith(type: .audioPause)?.withTintColor(.white)
-    playButton.setImage(playImage?.withRenderingMode(.alwaysTemplate), for: .normal)
-    playButton.setImage(pauseImage?.withRenderingMode(.alwaysTemplate), for: .selected)
+    playButton.setImage(playImage, for: .normal)
+    playButton.setImage(pauseImage, for: .selected)
     playButton.backgroundColor = UIColor.blueThemeColor
+    playButton.layer.cornerRadius = 17.5
     return playButton
   }()
 
