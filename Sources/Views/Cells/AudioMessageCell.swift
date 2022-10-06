@@ -164,10 +164,11 @@ open class AudioMessageCell: MessageContentCell {
   /// The play button view to display on audio messages.
   public lazy var playButton: UIButton = {
     let playButton = UIButton(type: .custom)
-    let playImage = UIImage.messageKitImageWith(type: .play)
-    let pauseImage = UIImage.messageKitImageWith(type: .pause)
+    let playImage = UIImage.messageKitImageWith(type: .audioPlay)?.withTintColor(.white)
+    let pauseImage = UIImage.messageKitImageWith(type: .audioPause)?.withTintColor(.white)
     playButton.setImage(playImage?.withRenderingMode(.alwaysTemplate), for: .normal)
     playButton.setImage(pauseImage?.withRenderingMode(.alwaysTemplate), for: .selected)
+    playButton.backgroundColor = UIColor.blueThemeColor
     return playButton
   }()
 
