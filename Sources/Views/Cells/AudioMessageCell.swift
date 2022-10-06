@@ -135,7 +135,7 @@ open class AudioMessageCell: MessageContentCell {
                 let duration = audioAsset.duration
                 let durationInSeconds = CMTimeGetSeconds(duration)
                 print(Int(durationInSeconds))
-                var returnValue = "0:00"
+                var returnValue = "00:00"
                 if durationInSeconds < 60 {
                     returnValue = String(format: "0:%.02d", Int(durationInSeconds.rounded(.up)))
                 } else if durationInSeconds < 3600 {
@@ -158,7 +158,6 @@ open class AudioMessageCell: MessageContentCell {
             }
         }
     }
-    
 
   // MARK: Public
 
@@ -177,7 +176,7 @@ open class AudioMessageCell: MessageContentCell {
     let durationLabel = UILabel(frame: CGRect.zero)
     durationLabel.textAlignment = .right
     durationLabel.font = UIFont.systemFont(ofSize: 14)
-    durationLabel.text = "0:00"
+    durationLabel.text = "00:00"
     return durationLabel
   }()
 
