@@ -26,7 +26,9 @@ import UIKit
 
 public enum ImageType: String {
   case play
+  case audioPlay
   case pause
+  case audioPause
   case disclosure
   case ai
   case android
