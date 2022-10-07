@@ -371,12 +371,12 @@ extension MessagesDisplayDelegate {
     }
     
     public func audioProgressTextFormat(_ duration: Float, for _: AudioMessageCell, in _: MessagesCollectionView) -> String {
-        var returnValue = "0:00"
+        var returnValue = "00:00"
         // print the time as 0:ss if duration is up to 59 seconds
         // print the time as m:ss if duration is up to 59:59 seconds
         // print the time as h:mm:ss for anything longer
         if duration < 60 {
-            returnValue = String(format: "0:%.02d", Int(duration.rounded(.up)))
+            returnValue = String(format: "00:%.02d", Int(duration.rounded(.up)))
         } else if duration < 3600 {
             returnValue = String(format: "%.02d:%.02d", Int(duration / 60), Int(duration) % 60)
         } else {
