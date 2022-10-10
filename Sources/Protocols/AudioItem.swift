@@ -34,4 +34,7 @@ public protocol AudioItem {
 
   /// The size of the audio item.
   var size: CGSize { get }
+
+  /// The progress of the audio item.
+  var mediaProgress: Float { get }
 }
