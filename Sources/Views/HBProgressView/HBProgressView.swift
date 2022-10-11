@@ -13,7 +13,6 @@ open class HBProgressView: UIView, MDCActivityIndicatorDelegate {
     // MARK: - Outlets
     @IBOutlet weak var stackVW: UIStackView!
     @IBOutlet weak var vwProgressContainer: UIView!
-    @IBOutlet weak var activityIndicator: MDCActivityIndicator!
     @IBOutlet weak var vwRetryContainer: UIView!
 
     public lazy var btnCancel: UIButton = {
@@ -31,6 +30,18 @@ open class HBProgressView: UIView, MDCActivityIndicatorDelegate {
         }
         return btn
     }()
+    
+    public lazy var activityIndicator: MDCActivityIndicator = {
+        let indicatorView = MDCActivityIndicator()
+        indicatorView.centerInSuperview()
+        indicatorView.indicatorMode = .determinate
+        indicatorView.radius = 25
+        indicatorView.strokeWidth = 5.0
+        indicatorView.cycleColors = [indicatorColor]
+        indicatorView.trackEnabled = true
+        return indicatorView
+    }()
+    
     public var onCompletionOfProgress  : (() -> ())?
     
     // MARK: - Variables
@@ -89,6 +100,8 @@ open class HBProgressView: UIView, MDCActivityIndicatorDelegate {
 
     func setupView() {
         nibSetup()
+        vwProgressContainer.addSubview(activityIndicator)
+        activityIndicator.centerInSuperview()
         vwProgressContainer.addSubview(btnCancel)
         btnCancel.frame = activityIndicator.bounds
         btnCancel.centerInSuperview()
