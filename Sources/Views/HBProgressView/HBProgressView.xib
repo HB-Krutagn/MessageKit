@@ -10,7 +10,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HBProgressView" customModule="MessageKit" customModuleProvider="target">
             <connections>
-                <outlet property="activityIndicator" destination="LZX-wL-u8k" id="92w-jl-iXP"/>
                 <outlet property="stackVW" destination="Y43-QR-TuE" id="Cf6-kP-UnB"/>
                 <outlet property="vwProgressContainer" destination="SO9-fa-IfO" id="yWn-Rh-ywi"/>
                 <outlet property="vwRetryContainer" destination="vC2-rp-eBa" id="VG4-oM-mzo"/>
@@ -29,26 +28,7 @@
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SO9-fa-IfO">
                                     <rect key="frame" x="0.0" y="0.0" width="216" height="164"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LZX-wL-u8k" customClass="MDCActivityIndicator">
-                                            <rect key="frame" x="83" y="57" width="50" height="50"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="50" id="5YR-7V-np7"/>
-                                                <constraint firstAttribute="height" constant="50" id="fak-NG-Cks"/>
-                                            </constraints>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="progress">
-                                                    <real key="value" value="0.20000000000000001"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </view>
-                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstItem="LZX-wL-u8k" firstAttribute="centerX" secondItem="SO9-fa-IfO" secondAttribute="centerX" priority="250" id="aD6-ra-wbR"/>
-                                        <constraint firstItem="LZX-wL-u8k" firstAttribute="centerY" secondItem="SO9-fa-IfO" secondAttribute="centerY" id="nMq-e2-dU2"/>
-                                    </constraints>
                                 </view>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vC2-rp-eBa">
                                     <rect key="frame" x="0.0" y="0.0" width="216" height="0.0"/>
