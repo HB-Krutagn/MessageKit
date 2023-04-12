@@ -27,12 +27,18 @@ open class MediaMessageSizeCalculator: MessageSizeCalculator {
   open override func messageContainerSize(for message: MessageType, at indexPath: IndexPath) -> CGSize {
     let maxWidth = messageContainerMaxWidth(for: message, at: indexPath)
     let sizeForMediaItem = { (maxWidth: CGFloat, item: MediaItem) -> CGSize in
-      if maxWidth < item.size.width {
+        let font = UIFont.systemFont(ofSize: 18.0, weight: .regular)
+         var height = self.heightForView(text: (item.text ?? ""), font: font, width: item.size.width) + 10.0
+        if item.text == "" {
+            height = 0
+        }
+        if maxWidth < item.size.width {
         // Maintain the ratio if width is too great
         let height = maxWidth * item.size.height / item.size.width
-        return CGSize(width: maxWidth, height: height)
+        return CGSize(width: maxWidth, height: height + 100 + height)
       }
-      return item.size
+//      return item.size
+        return CGSize(width: item.size.width, height: item.size.height + height )
     }
     switch message.kind {
     case .photo(let item):
@@ -43,4 +49,11 @@ open class MediaMessageSizeCalculator: MessageSizeCalculator {
       fatalError("messageContainerSize received unhandled MessageDataType: \(message.kind)")
     }
   }
+    func heightForView(text: String, font: UIFont, width: CGFloat) -> CGFloat {
+        let attributedText = NSAttributedString(string: text, attributes: [.font: font])
+        let framesetter = CTFramesetterCreateWithAttributedString(attributedText)
+        let size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRange(location: 0,length: 0), nil, CGSize(width: width, height: .greatestFiniteMagnitude), nil)
+        return size.height
+    }
+
 }

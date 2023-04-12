@@ -44,6 +44,18 @@ open class MediaMessageCell: MessageContentCell {
         progressView.layer.masksToBounds = true
         return progressView
     }()
+   
+    open lazy var captionLabel: MessageLabel = {
+        let captionLabel = MessageLabel()
+        captionLabel.lineBreakMode = .byWordWrapping
+        captionLabel.backgroundColor = .clear
+        captionLabel.textAlignment = .left
+        captionLabel.textColor = .black
+        captionLabel.text = ""
+        captionLabel.numberOfLines = 0
+        captionLabel.translatesAutoresizingMaskIntoConstraints = false
+        return captionLabel
+    }()
     
     open var progressPercentage: Float? = nil {
         didSet {
@@ -85,7 +97,7 @@ open class MediaMessageCell: MessageContentCell {
     
     /// Responsible for setting up the constraints of the cell's subviews.
     open func setupConstraints() {
-        imageView.fillSuperview()
+//        imageView.fillSuperview()
         playButtonView.centerInSuperview()
         playButtonView.constraint(equalTo: CGSize(width: 35, height: 35))
         messageProgressView.centerInSuperview()
@@ -94,16 +106,38 @@ open class MediaMessageCell: MessageContentCell {
         messageProgressView.btnRetry.centerInSuperview()
         messageProgressView.btnRetry.constraint(equalTo: CGSize(width: 50, height: 50))
     }
-    
     open override func setupSubviews() {
         super.setupSubviews()
-        messageContainerView.addSubview(imageView)
-        messageContainerView.addSubview(playButtonView)
-        messageContainerView.addSubview(messageProgressView)
+    
+        imageView.addSubview(playButtonView)
+        imageView.addSubview(messageProgressView)
+        imageView.heightAnchor.constraint(equalToConstant:240).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 240).isActive = true
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
+
+        let mainStackView = UIStackView()
+        mainStackView.axis = .vertical
+        mainStackView.distribution = .fill
+        mainStackView.spacing = 1.0
+        mainStackView.addArrangedSubview(imageView)
+        mainStackView.addArrangedSubview(captionLabel)
+        messageContainerView.addSubview(mainStackView)
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        mainStackView.addConstraints(messageContainerView.topAnchor,left: messageContainerView.leftAnchor,bottom: messageContainerView.bottomAnchor,right: messageContainerView.rightAnchor, topConstant: 5,leftConstant: 5,bottomConstant: 5,rightConstant: 5)
         setProgressViewConfig()
         messageProgressView.isHidden = true
         setupConstraints()
     }
+//    open override func setupSubviews() {
+//        super.setupSubviews()
+//        messageContainerView.addSubview(imageView)
+//        messageContainerView.addSubview(playButtonView)
+//        messageContainerView.addSubview(messageProgressView)
+//        setProgressViewConfig()
+//        messageProgressView.isHidden = true
+//        setupConstraints()
+//    }
     
     open override func prepareForReuse() {
         super.prepareForReuse()
@@ -131,10 +165,12 @@ open class MediaMessageCell: MessageContentCell {
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
             playButtonView.isHidden = true
             progressPercentage = mediaItem.mediaProgress
+            captionLabel.text = mediaItem.text
         case .video(let mediaItem):
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
             playButtonView.isHidden = false
             progressPercentage = mediaItem.mediaProgress
+            captionLabel.text = mediaItem.text
         default:
             break
         }
