@@ -31,14 +31,14 @@ let package = Package(
         .plugin(name: "SwiftFormatPlugin", targets: ["SwiftFormatPlugin"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/HB-Krutagn/HBInputBarAccessoryView", .upToNextMajor(from: "6.1.0")),
+        .package(url: "https://github.com/nathantannar4/InputBarAccessoryView", .upToNextMajor(from: "6.1.0")),
     ],
     targets: [
         // MARK: - MessageKit
 
         .target(
             name: "MessageKit",
-            dependencies: ["HBInputBarAccessoryView"],
+            dependencies: ["InputBarAccessoryView"],
             path: "Sources",
             exclude: ["Supporting/Info.plist", "Supporting/MessageKit.h"],
             swiftSettings: [SwiftSetting.define("IS_SPM")],
