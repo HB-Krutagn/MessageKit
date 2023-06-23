@@ -353,18 +353,19 @@ open class MessagesViewController: UIViewController, UICollectionViewDelegateFlo
     view.addSubviews(messagesCollectionView, inputContainerView)
   }
 
-  private func setupConstraints() {
-    messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-    /// Constraints of inputContainerView are managed by keyboardManager
-    inputContainerView.translatesAutoresizingMaskIntoConstraints = false
-
-    NSLayoutConstraint.activate([
-      messagesCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
-      messagesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      messagesCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      messagesCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-    ])
-  }
+   public func setupConstraints() {
+        messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        /// Constraints of inputContainerView are managed by keyboardManager
+        inputContainerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            messagesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 43 +  (UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0)),
+            messagesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: (-50 - (UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0))),
+            //      messagesCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            //              messagesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            messagesCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            messagesCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+        ])
+    }
 
   private func setupDelegates() {
     messagesCollectionView.delegate = self
