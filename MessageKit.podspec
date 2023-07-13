@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
 
    s.ios.deployment_target = '13.0'
    s.ios.resources = ['Sources/Assets.xcassets', "**/*.{storyboard,xib}"]
-   s.dependency 'HB-Krutagn/HBInputBarAccessoryView', '~> https://github.com/HB-Krutagn/HBInputBarAccessoryView.git'
+   s.dependency 'HBInputBarAccessoryView', '~> https://github.com/HB-Krutagn/HBInputBarAccessoryView.git'
    s.dependency 'SDWebImage'
    s.dependency 'MaterialComponents/ActivityIndicator'
 
