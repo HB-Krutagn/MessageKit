@@ -80,19 +80,37 @@ extension MessagesViewController {
 
   /// Updates bottom messagesCollectionView inset based on the position of inputContainerView
   internal func updateMessageCollectionViewBottomInset() {
-    let collectionViewHeight = messagesCollectionView.frame.maxY
-    let newBottomInset = collectionViewHeight - (inputContainerView.frame.minY - additionalBottomInset) -
-      automaticallyAddedBottomInset
-    let normalizedNewBottomInset = max(0, newBottomInset)
-    let differenceOfBottomInset = newBottomInset - messageCollectionViewBottomInset
-
-    UIView.performWithoutAnimation {
-      guard differenceOfBottomInset != 0 else { return }
-      messagesCollectionView.contentInset.bottom = normalizedNewBottomInset
-      messagesCollectionView.verticalScrollIndicatorInsets.bottom = newBottomInset
+        let collectionViewHeight = messagesCollectionView.frame.maxY
+        let newBottomInset = collectionViewHeight - (inputContainerView.frame.minY - additionalBottomInset) -
+        automaticallyAddedBottomInset
+        let normalizedNewBottomInset = max(0, newBottomInset)
+        let differenceOfBottomInset = newBottomInset - messageCollectionViewBottomInset
+        UIView.performWithoutAnimation {
+            guard differenceOfBottomInset != 0 else { return }
+            messagesCollectionView.contentInset.bottom = normalizedNewBottomInset
+            messagesCollectionView.verticalScrollIndicatorInsets.bottom = newBottomInset
+            if isAtBottomOfCollectionView(){
+                DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.1) {
+                    self.messagesCollectionView.scrollToLastItem(at: .bottom, animated: false)
+                }
+            }
+        }
     }
-  }
 
+
+      func isAtBottomOfCollectionView() -> Bool {
+        let  scrollViewHeight = self.messagesCollectionView.frame.size.height;
+        let  scrollContentSizeHeight = self.messagesCollectionView.contentSize.height;
+        let  scrollOffset = self.messagesCollectionView.contentOffset.y;
+        
+        if (scrollOffset + scrollViewHeight >= scrollContentSizeHeight - 150)
+        {
+            return true
+        }
+        return false
+        
+    }
+  
   // MARK: Private
 
   /// UIScrollView can automatically add safe area insets to its contentInset,
