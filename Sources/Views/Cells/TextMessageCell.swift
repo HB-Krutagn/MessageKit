@@ -80,12 +80,23 @@ open class TextMessageCell: MessageContentCell {
       let textMessageKind = message.kind.textMessageKind
       switch textMessageKind {
       case .text(let text), .emoji(let text):
-        let textColor = displayDelegate.textColor(for: message, at: indexPath, in: messagesCollectionView)
-        messageLabel.text = text
-        messageLabel.textColor = textColor
-        if let font = messageLabel.messageLabelFont {
-          messageLabel.font = font
-        }
+          let textColor = displayDelegate.textColor(for: message, at: indexPath, in: messagesCollectionView)
+                messageLabel.textColor = textColor
+                if message.isExpanded{
+                    messageLabel.text = text.getExpandText()
+                    if text.count >= 350{
+                        self.messageLabel.colorString(text: messageLabel.text,coloredText: String.lessText)
+                    }
+                    
+                }else{
+                    messageLabel.text = text.getCollpaseText()
+                    if text.count >= 350{
+                        self.messageLabel.colorString(text: messageLabel.text,coloredText: String.moreText)
+                    }
+                }
+                if let font = messageLabel.messageLabelFont {
+                    messageLabel.font = font
+                }
       case .attributedText(let text):
         messageLabel.attributedText = text
       default:
@@ -99,4 +110,35 @@ open class TextMessageCell: MessageContentCell {
   open override func cellContentView(canHandle touchPoint: CGPoint) -> Bool {
     messageLabel.handleGesture(touchPoint)
   }
+}
+extension String {
+    static let moreText = "see more"
+    static let lessText = "see less"
+    func getCollpaseText() -> String? {
+        if self.count >= 350 {
+            let msg = self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            let maxLength = 330
+            let substring = String(msg.prefix(maxLength-35))
+            var collapseText = substring.appending("...\n").appending(String.moreText)
+            return collapseText
+        }
+        return self
+    }
+    
+    func getExpandText() -> String? {
+        if self.count >= 350 {
+            var expandText = self.appending("\n").appending(String.lessText)
+            return expandText
+        }
+        return self
+    }
+}
+extension UILabel {
+    func colorString(text: String?, coloredText: String?, color: UIColor? = .blue) {
+        let attributedString = NSMutableAttributedString(string: text!)
+        let range = (text! as NSString).range(of: coloredText!)
+        attributedString.setAttributes([NSAttributedString.Key.foregroundColor: color!],
+                                       range: range)
+        self.attributedText = attributedString
+    }
 }
