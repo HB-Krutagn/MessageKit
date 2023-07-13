@@ -43,7 +43,12 @@ open class TextMessageSizeCalculator: MessageSizeCalculator {
     case .attributedText(let text):
       attributedText = text
     case .text(let text), .emoji(let text), .systemMessage(let text):
-      attributedText = NSAttributedString(string: text, attributes: [.font: messageLabelFont])
+       if text.count >= 350{
+                let text1 = message.isExpanded ? text.getExpandText() ?? "" : text.getCollpaseText() ?? ""
+                attributedText = NSAttributedString(string: text1, attributes: [.font: messageLabelFont])
+            }else{
+                attributedText = NSAttributedString(string:text, attributes: [.font: messageLabelFont])
+            }
     default:
       fatalError("messageContainerSize received unhandled MessageDataType: \(message.kind)")
     }
