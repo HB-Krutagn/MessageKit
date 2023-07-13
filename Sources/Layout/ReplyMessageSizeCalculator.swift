@@ -25,7 +25,8 @@ open class ReplyMessageSizeCalculator: MessageSizeCalculator {
             case .text:
                 if !(item.text ?? "").isEmpty {
                     let font = UIFont.systemFont(ofSize: 16.0, weight: .regular) //UIFont(name: FontName.Regular.rawValue, size: IS_iPAD ? 18.0 : 16.0) ?? .systemFont(ofSize: IS_iPAD ? 18.0: 16.0)
-                    lHeight += heightForView(text: (item.text ?? ""), font: font, width: maxWidth) + 5.0
+                    // lHeight += heightForView(text: (item.text ?? ""), font: font, width: maxWidth) + 5.0
+                     lHeight += heightForView(text: (item.text ?? ""), font: font, width: maxWidth, isSeeMore: message.isExpanded) + 5.0
                     return CGSize(width: getMaxWidthForTextMessageType(for: message, at: indexPath, text: item.text ?? ""), height: 80 + lHeight)
                 } else {
                     return CGSize(width: maxWidth, height: 95 + lHeight)
@@ -34,7 +35,8 @@ open class ReplyMessageSizeCalculator: MessageSizeCalculator {
                 var captionHeight: CGFloat = 0
                 if !(item.text ?? "").isEmpty {
                     let font = UIFont.systemFont(ofSize: 16.0, weight: .regular)//UIFont(name: FontName.Regular.rawValue, size: IS_iPAD ? 18.0: 16.0) ?? .systemFont(ofSize: IS_iPAD ? 18.0: 16.0)
-                    captionHeight = heightForView(text: (item.text ?? ""), font: font, width: 240) + 10.0
+                    // captionHeight = heightForView(text: (item.text ?? ""), font: font, width: 240) + 10.0
+                     captionHeight = heightForView(text: (item.text ?? ""), font: font, width: 240, isSeeMore: message.isExpanded) + 10.0
                     return CGSize(width: 240, height: 60 + 240 + captionHeight + lHeight)
                 } else {
                     return CGSize(width: 240, height: 60 + 240 + lHeight)
@@ -113,8 +115,17 @@ open class ReplyMessageSizeCalculator: MessageSizeCalculator {
         return 150
     }
         
-    func heightForView(text: String, font: UIFont, width: CGFloat) -> CGFloat {
-        let attributedText = NSAttributedString(string: text, attributes: [.font: font])
+        func heightForView(text: String, font: UIFont, width: CGFloat,isSeeMore:Bool) -> CGFloat {
+        var attributedText:NSAttributedString
+        if text.count >= 350{
+            let text1 = isSeeMore ? text.getExpandText() ?? "text" : text.getCollpaseText() ?? "text"
+            print(text1)
+            attributedText = NSAttributedString(string: text1, attributes: [.font: font])
+        }else{
+            attributedText = NSAttributedString(string:text,attributes: [.font: font])
+        }
+        
+//        let attributedText = NSAttributedString(string: text, attributes: [.font: font])
         let framesetter = CTFramesetterCreateWithAttributedString(attributedText)
         let size = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRange(location: 0,length: 0), nil, CGSize(width: width, height: .greatestFiniteMagnitude), nil)
         return size.height
