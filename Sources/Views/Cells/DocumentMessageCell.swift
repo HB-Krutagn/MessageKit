@@ -37,7 +37,17 @@ open class DocumentMessageCell: MessageContentCell {
         nameLabel.textColor = UIColor.black
         return nameLabel
     }()
-    
+     open lazy var captionLabel: MessageLabel = {
+        let captionLabel = MessageLabel()
+        captionLabel.lineBreakMode = .byWordWrapping
+        captionLabel.backgroundColor = .clear
+        captionLabel.textAlignment = .left
+        captionLabel.textColor = .black
+        captionLabel.text = ""
+        captionLabel.numberOfLines = 0
+        captionLabel.translatesAutoresizingMaskIntoConstraints = false
+        return captionLabel
+    }()
     public lazy var sizeLabel: MessageLabel = {
         let durationLabel = MessageLabel(frame: CGRect.zero)
         durationLabel.textAlignment = .left
@@ -119,10 +129,13 @@ open class DocumentMessageCell: MessageContentCell {
         innerView.addSubview(nameLabel)
         innerView.addSubview(sizeLabel)
         
-        let mainStackView = UIStackView(arrangedSubviews: [innerView])
+        // let mainStackView = UIStackView(arrangedSubviews: [innerView])
+        let mainStackView = UIStackView()
         mainStackView.axis = .vertical
         mainStackView.distribution = .fill
         mainStackView.spacing = 2.0
+        mainStackView.addArrangedSubview(innerView)
+        mainStackView.addArrangedSubview(captionLabel)
         messageContainerView.addSubview(mainStackView)
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.addConstraints(messageContainerView.topAnchor,left: messageContainerView.leftAnchor,bottom: messageContainerView.bottomAnchor,right: messageContainerView.rightAnchor, topConstant: 5,leftConstant: 5,bottomConstant: 5,rightConstant: 5)
@@ -224,9 +237,11 @@ open class DocumentMessageCell: MessageContentCell {
                 pictureView.image = imageName
                 nameLabel.text = fileName
                 sizeLabel.text = url.fileSizeString + "  " + url.pathExtension.uppercased()
+                 captionLabel.text = item.text
             } else {
                 nameLabel.text = "unknown"
                 pictureView.image = QLPreviewHelper.getDocThumbnail(docUrl: nil, fileName: "unknown")
+                captionLabel.text =  item.text
             }
             progressPercentage = item.mediaProgress
         default:
