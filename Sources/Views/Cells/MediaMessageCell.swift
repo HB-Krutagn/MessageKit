@@ -106,39 +106,47 @@ open class MediaMessageCell: MessageContentCell {
         messageProgressView.btnRetry.centerInSuperview()
         messageProgressView.btnRetry.constraint(equalTo: CGSize(width: 50, height: 50))
     }
+    let viewLeft = UIView()
+    let viewRight = UIView()
+    let mainStackView1 = UIStackView()
     open override func setupSubviews() {
         super.setupSubviews()
-    
+        viewRight.backgroundColor = .clear
+        viewLeft.backgroundColor = .clear
+        viewLeft.widthAnchor.constraint(equalToConstant: 5).isActive = true
+        viewRight.widthAnchor.constraint(equalToConstant: 5).isActive = true
         imageView.addSubview(playButtonView)
         imageView.addSubview(messageProgressView)
         imageView.heightAnchor.constraint(equalToConstant:240).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 240).isActive = true
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
-
+      
+        mainStackView1.axis = .horizontal
+        mainStackView1.distribution = .fill
+        mainStackView1.spacing = 1.0
+        
         let mainStackView = UIStackView()
         mainStackView.axis = .vertical
         mainStackView.distribution = .fill
         mainStackView.spacing = 1.0
         mainStackView.addArrangedSubview(imageView)
         mainStackView.addArrangedSubview(captionLabel)
-        messageContainerView.addSubview(mainStackView)
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
-        mainStackView.addConstraints(messageContainerView.topAnchor,left: messageContainerView.leftAnchor,bottom: messageContainerView.bottomAnchor,right: messageContainerView.rightAnchor, topConstant: 5,leftConstant: 5,bottomConstant: 5,rightConstant: 5)
+        
+        mainStackView1.addArrangedSubview(viewLeft)
+        mainStackView1.addArrangedSubview(mainStackView)
+        mainStackView1.addArrangedSubview(viewRight)
+       
+        messageContainerView.addSubview(mainStackView1)
+        
+        mainStackView1.translatesAutoresizingMaskIntoConstraints = false
+        mainStackView1.addConstraints(messageContainerView.topAnchor,left: messageContainerView.leftAnchor,bottom: messageContainerView.bottomAnchor,right: messageContainerView.rightAnchor, topConstant: 5,leftConstant: 5,bottomConstant: 5,rightConstant: 5)
         setProgressViewConfig()
         messageProgressView.isHidden = true
         setupConstraints()
     }
-//    open override func setupSubviews() {
-//        super.setupSubviews()
-//        messageContainerView.addSubview(imageView)
-//        messageContainerView.addSubview(playButtonView)
-//        messageContainerView.addSubview(messageProgressView)
-//        setProgressViewConfig()
-//        messageProgressView.isHidden = true
-//        setupConstraints()
-//    }
-    
+
     open override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
@@ -160,6 +168,24 @@ open class MediaMessageCell: MessageContentCell {
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
             fatalError(MessageKitError.nilMessagesDisplayDelegate)
         }
+            
+            guard let dataSource = messagesCollectionView.messagesDataSource else {
+                fatalError("MessageKitError.nilMessagesDataSource")
+            }
+            let isCurrentUser = dataSource.isFromCurrentSender(message: message)
+            switch self.bubbleView.style {
+            case .bubbleTail:
+                if !isCurrentUser{
+                    viewLeft.isHidden = false
+                    viewRight.isHidden = true
+                }else{
+                    viewRight.isHidden = false
+                    viewLeft.isHidden = true
+                }
+            default:
+                viewRight.isHidden = true
+                viewLeft.isHidden = true
+            }
         switch message.kind {
         case .photo(let mediaItem):
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
