@@ -110,13 +110,24 @@ open class AudioMessageCell: MessageContentCell {
         let playButtonLeftConstraint = messageContainerView.constraints.filter { $0.identifier == "left" }.first
         let durationLabelRightConstraint = messageContainerView.constraints.filter { $0.identifier == "right" }.first
         
-        if !dataSource.isFromCurrentSender(message: message) {
-            playButtonLeftConstraint?.constant = 6
-            durationLabelRightConstraint?.constant = -8
-        } else {
-            playButtonLeftConstraint?.constant = 6
-            durationLabelRightConstraint?.constant = -8
-        }
+       switch self.bubbleView.style {
+            case .bubbleTail:
+                if !dataSource.isFromCurrentSender(message: message) {
+                    playButtonLeftConstraint?.constant = 15
+                    durationLabelRightConstraint?.constant = -8
+                } else {
+                    playButtonLeftConstraint?.constant = 6
+                    durationLabelRightConstraint?.constant = -15
+                }
+            default:
+                if !dataSource.isFromCurrentSender(message: message) {
+                    playButtonLeftConstraint?.constant = 6
+                    durationLabelRightConstraint?.constant = -8
+                } else {
+                    playButtonLeftConstraint?.constant = 6
+                    durationLabelRightConstraint?.constant = -8
+                }
+            }
         
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
             fatalError(MessageKitError.nilMessagesDisplayDelegate)
