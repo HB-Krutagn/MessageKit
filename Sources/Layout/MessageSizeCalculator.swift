@@ -56,7 +56,8 @@ open class MessageSizeCalculator: CellSizeCalculator {
     attributes.cellBottomLabelAlignment = cellBottomLabelAlignment(for: message)
     attributes.messageTopLabelSize = messageTopLabelSize(for: message, at: indexPath)
     attributes.messageTopLabelAlignment = messageTopLabelAlignment(for: message, at: indexPath)
-    attributes.cellBottomLabelAlignment = messageTopLabelAlignment(for: message, at: indexPath)
+    attributes.cellBottomLabelAlignment = cellBottomLabelAlignment(for: message)
+    // messageTopLabelAlignment(for: message, at: indexPath)
 
     attributes.messageBottomLabelAlignment = messageBottomLabelAlignment(for: message, at: indexPath)
     attributes.messageBottomLabelSize = messageBottomLabelSize(for: message, at: indexPath)
@@ -163,13 +164,17 @@ open class MessageSizeCalculator: CellSizeCalculator {
 
   // MARK: - Top message Label
 
-  open func messageTopLabelSize(for message: MessageType, at indexPath: IndexPath) -> CGSize {
+ open func messageTopLabelSize(for message: MessageType, at indexPath: IndexPath) -> CGSize {
     let layoutDelegate = messagesLayout.messagesLayoutDelegate
     let collectionView = messagesLayout.messagesCollectionView
     let height = layoutDelegate.messageTopLabelHeight(for: message, at: indexPath, in: collectionView)
-    return CGSize(width: messagesLayout.itemWidth, height: height)
+      let dataSource = messagesLayout.messagesDataSource
+      guard let attributedText = dataSource.messageTopLabelAttributedText(for: message, at: indexPath) else {
+        return CGSize(width: messagesLayout.itemWidth, height: height)
+      }
+      let size = attributedText.size()
+      return CGSize(width: size.width + 10, height: height)
   }
-
   open func messageTopLabelAlignment(for message: MessageType, at indexPath: IndexPath) -> LabelAlignment {
     let collectionView = messagesLayout.messagesCollectionView
     let layoutDelegate = messagesLayout.messagesLayoutDelegate
@@ -196,17 +201,24 @@ open class MessageSizeCalculator: CellSizeCalculator {
 
   // MARK: - Bottom cell Label
 
-  open func cellBottomLabelSize(for message: MessageType, at indexPath: IndexPath) -> CGSize {
+open func cellBottomLabelSize(for message: MessageType, at indexPath: IndexPath) -> CGSize {
     let layoutDelegate = messagesLayout.messagesLayoutDelegate
     let collectionView = messagesLayout.messagesCollectionView
     let height = layoutDelegate.cellBottomLabelHeight(for: message, at: indexPath, in: collectionView)
-    return CGSize(width: messagesLayout.itemWidth, height: height)
+     
+      let dataSource = messagesLayout.messagesDataSource
+      guard let attributedText = dataSource.cellBottomLabelAttributedText(for: message, at: indexPath) else {
+        return .zero
+      }
+      let size = attributedText.size()
+    return CGSize(width: size.width + 10, height: height)
   }
 
   open func cellBottomLabelAlignment(for message: MessageType) -> LabelAlignment {
     let dataSource = messagesLayout.messagesDataSource
     let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
-    return isFromCurrentSender ? outgoingCellBottomLabelAlignment : incomingCellBottomLabelAlignment
+     return outgoingCellBottomLabelAlignment
+    // return isFromCurrentSender ? outgoingCellBottomLabelAlignment : incomingCellBottomLabelAlignment
   }
 
   // MARK: - Bottom Message Label
@@ -270,7 +282,8 @@ open class MessageSizeCalculator: CellSizeCalculator {
   public var outgoingCellTopLabelAlignment = LabelAlignment(textAlignment: .center, textInsets: .zero)
 
   public var incomingCellBottomLabelAlignment = LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(left: 42))
-  public var outgoingCellBottomLabelAlignment = LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(right: 42))
+  // public var outgoingCellBottomLabelAlignment = LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(right: 42))
+   public var outgoingCellBottomLabelAlignment = LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(right: 10))
 
   public var incomingMessageTopLabelAlignment = LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(left: 42))
   public var outgoingMessageTopLabelAlignment = LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(right: 42))
