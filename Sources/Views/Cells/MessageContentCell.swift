@@ -363,13 +363,13 @@ open class MessageContentCell: MessageCollectionViewCell {
         var origin1: CGPoint = .zero
         origin1.y = attributes.messageTopLabelSize.height + attributes.messageContainerPadding.top + 2.5
         
-        let maxWidth = max(attributes.messageContainerSize.width,
+        let MaxWidth = max(attributes.messageContainerSize.width,
                            attributes.cellBottomLabelSize.width,
                            attributes.messageTopLabelSize.width)
             
         var size = attributes.messageContainerSize
         let maxWidth = attributes.messageContainerMaxWidth
-        size.width = maxWidth
+        size.width = MaxWidth
         if attributes.messageContainerSize.width < maxWidth {
             if (maxWidth - attributes.messageContainerSize.width) > attributes.cellBottomLabelSize.width {
                 size.width = attributes.messageContainerSize.width + attributes.cellBottomLabelSize.width - 10
