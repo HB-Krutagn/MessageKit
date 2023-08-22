@@ -249,18 +249,23 @@ open class DocumentMessageCell: MessageContentCell {
         }
     }
     
-    private func setProgress(progress: Float?) {
+   private func setProgress(progress: Float?) {
         guard let currentProgress = progress else {
             messageProgressView.isHidden = true
             return
         }
         messageProgressView.isHidden = false
-        messageProgressView.progress = currentProgress
+        if currentProgress == 0.0{
+            messageProgressView.progress = 0.01
+        }else{
+            messageProgressView.progress = currentProgress
+        }
         messageProgressView.onCompletionOfProgress = { [weak self] in
             guard let weakSelf = self else { return }
             weakSelf.messageProgressView.isHidden = true
         }
-        if currentProgress >= 1.0 || currentProgress <= 0.0 {
+//        if currentProgress >= 1.0 || currentProgress <= 0.0 {
+        if currentProgress >= 1.0 {
             messageProgressView.isHidden = true
         }
     }
