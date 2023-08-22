@@ -151,7 +151,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         layoutAvatarView(with: attributes)
         layoutAccessoryView(with: attributes)
         layoutTimeLabelView(with: attributes)
-        
+        attributes.accessoryViewPadding
     }
     
     /// Used to configure the cell.
@@ -177,6 +177,9 @@ open class MessageContentCell: MessageCollectionViewCell {
         
         displayDelegate.configureAccessoryView(accessoryView, for: message, at: indexPath, in: messagesCollectionView)
         bubbleView.style = messageStyle
+       
+       
+      
         let topCellLabelText = dataSource.cellTopLabelAttributedText(for: message, at: indexPath)
         let bottomCellLabelText = dataSource.cellBottomLabelAttributedText(for: message, at: indexPath)
         let topMessageLabelText = dataSource.messageTopLabelAttributedText(for: message, at: indexPath)
@@ -189,14 +192,15 @@ open class MessageContentCell: MessageCollectionViewCell {
         messageTimestampLabel.attributedText = messageTimestampLabelText
         messageTimestampLabel.isHidden = !messagesCollectionView.showMessageTimestampOnSwipeLeft
         bubbleView.backgroundColor = messageColor
-
     }
     
     /// Handle tap gesture on contentView and its subviews.
     open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
-        let touchLocation = gesture.location(in: self)
-        
+        let touchLocation = gesture.location(in: bubbleView)
+//        let touchLocation = gesture.location(in: self)
         switch true {
+        case cellBottomLabel.frame.contains(touchLocation):
+            delegate?.didTapCellBottomLabel(in: self)
         case messageContainerView.frame
                 .contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
             delegate?.didTapMessage(in: self)
@@ -204,14 +208,13 @@ open class MessageContentCell: MessageCollectionViewCell {
             delegate?.didTapAvatar(in: self)
         case cellTopLabel.frame.contains(touchLocation):
             delegate?.didTapCellTopLabel(in: self)
-        case cellBottomLabel.frame.contains(touchLocation):
-            delegate?.didTapCellBottomLabel(in: self)
         case messageTopLabel.frame.contains(touchLocation):
             delegate?.didTapMessageTopLabel(in: self)
         case messageBottomLabel.frame.contains(touchLocation):
             delegate?.didTapMessageBottomLabel(in: self)
         case accessoryView.frame.contains(touchLocation):
             delegate?.didTapAccessoryView(in: self)
+            
         default:
             delegate?.didTapBackground(in: self)
         }
@@ -289,22 +292,38 @@ open class MessageContentCell: MessageCollectionViewCell {
                 origin.y = attributes.cellTopLabelSize.height + attributes.messageContainerPadding.top
             }
         }
+        var size = attributes.messageContainerSize
+        let maxWidth = attributes.messageContainerMaxWidth
+        size.height = attributes.messageContainerSize.height + attributes.cellBottomLabelSize.height + attributes.messageTopLabelSize.height + attributes.messageContainerPadding.top + attributes.messageContainerPadding.bottom
+        
+        if attributes.messageContainerSize.width < maxWidth {
+            if (maxWidth - attributes.messageContainerSize.width) > attributes.cellBottomLabelSize.width {
+                size.width = attributes.messageContainerSize.width + attributes.cellBottomLabelSize.width - 10
+                size.height -= 15
+            }
+        }
         
         let avatarPadding = attributes.avatarLeadingTrailingPadding
         switch attributes.avatarPosition.horizontal {
         case .cellLeading:
-            origin.x = attributes.avatarSize.width + attributes.messageContainerPadding.left + avatarPadding
+            if !attributes.isBubbleView{
+                origin.x = attributes.avatarSize.width + attributes.messageContainerPadding.left + avatarPadding
+            }else{
+                origin.x = attributes.avatarSize.width + attributes.messageContainerPadding.left + avatarPadding + 5
+            }
         case .cellTrailing:
-            origin.x = attributes.frame.width - attributes.avatarSize.width - attributes.messageContainerSize.width - attributes
-                .messageContainerPadding.right - avatarPadding
-            
+            if !attributes.isBubbleView{
+                origin.x = (attributes.frame.width - attributes.avatarSize.width - size.width - attributes
+                    .messageContainerPadding.right - avatarPadding)
+            }else{
+                origin.x = (attributes.frame.width - attributes.avatarSize.width - size.width - attributes
+                    .messageContainerPadding.right - avatarPadding - 5)
+            }
+           
         case .natural:
             fatalError(MessageKitError.avatarPositionUnresolved)
         }
-        var size = attributes.messageContainerSize
        
-        size.height = attributes.messageContainerSize.height + attributes.cellBottomLabelSize.height + attributes.messageTopLabelSize.height + attributes.messageContainerPadding.top + attributes.messageContainerPadding.bottom
-        
         bubbleView.frame = CGRect(origin: origin, size:size)
     }
     open func layoutMessageContainerView(with attributes: MessagesCollectionViewLayoutAttributes) {
@@ -343,13 +362,20 @@ open class MessageContentCell: MessageCollectionViewCell {
         }
         var origin1: CGPoint = .zero
         origin1.y = attributes.messageTopLabelSize.height + attributes.messageContainerPadding.top + 2.5
-       
+        
         let maxWidth = max(attributes.messageContainerSize.width,
                            attributes.cellBottomLabelSize.width,
                            attributes.messageTopLabelSize.width)
             
-            attributes.messageContainerSize.width = maxWidth
-        messageContainerView.frame = CGRect(origin: origin1, size: attributes.messageContainerSize)
+        var size = attributes.messageContainerSize
+        let maxWidth = attributes.messageContainerMaxWidth
+        size.width = maxWidth
+        if attributes.messageContainerSize.width < maxWidth {
+            if (maxWidth - attributes.messageContainerSize.width) > attributes.cellBottomLabelSize.width {
+                size.width = attributes.messageContainerSize.width + attributes.cellBottomLabelSize.width - 10
+            }
+        }
+        messageContainerView.frame = CGRect(origin: origin1, size: size)
     }
     
     /// Positions the cell's top label.
@@ -367,7 +393,14 @@ open class MessageContentCell: MessageCollectionViewCell {
         cellBottomLabel.textAlignment = attributes.cellBottomLabelAlignment.textAlignment
         cellBottomLabel.textInsets = attributes.cellBottomLabelAlignment.textInsets
         
-        let y = messageBottomLabel.frame.minY +  attributes.messageContainerPadding.bottom - 5
+        var y = messageBottomLabel.frame.minY +  attributes.messageContainerPadding.bottom - 5
+        let maxWidth = attributes.messageContainerMaxWidth
+        if attributes.messageContainerSize.width < maxWidth {
+            if (maxWidth - attributes.messageContainerSize.width) > attributes.cellBottomLabelSize.width {
+                y = messageBottomLabel.frame.minY +  attributes.messageContainerPadding.bottom - 20
+            }
+        }
+        
         let origin = CGPoint(x: 0, y: y)
     
         var size  = attributes.cellBottomLabelSize
