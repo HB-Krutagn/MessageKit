@@ -252,18 +252,22 @@ open class AudioMessageCell: MessageContentCell {
         }
     }
 
-    private func setProgress(progress: Float?) {
+        private func setProgress(progress: Float?) {
         guard let currentProgress = progress else {
             activityIndicatorView.isHidden = true
             return
         }
         activityIndicatorView.isHidden = false
-        activityIndicatorView.progress = currentProgress
+        if currentProgress == 0.0 {
+            activityIndicatorView.progress = 0.01
+        }else{
+            activityIndicatorView.progress = currentProgress
+        }
         activityIndicatorView.onCompletionOfProgress = { [weak self] in
             guard let weakSelf = self else { return }
             weakSelf.activityIndicatorView.isHidden = true
         }
-        if currentProgress >= 1.0 || currentProgress <= 0.0 {
+        if currentProgress >= 1.0 {
             activityIndicatorView.isHidden = true
         }
     }
