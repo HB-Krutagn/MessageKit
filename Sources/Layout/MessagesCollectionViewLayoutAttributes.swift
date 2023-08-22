@@ -32,6 +32,8 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
     // swiftlint:disable force_cast
     let copy = super.copy(with: zone) as! MessagesCollectionViewLayoutAttributes
     copy.avatarSize = avatarSize
+    copy.messageContainerMaxWidth = messageContainerMaxWidth
+      copy.isBubbleView = isBubbleView
     copy.avatarPosition = avatarPosition
     copy.avatarLeadingTrailingPadding = avatarLeadingTrailingPadding
     copy.messageContainerSize = messageContainerSize
@@ -62,6 +64,8 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
         && attributes.avatarPosition == avatarPosition
         && attributes.avatarLeadingTrailingPadding == avatarLeadingTrailingPadding
         && attributes.messageContainerSize == messageContainerSize
+        && attributes.messageContainerMaxWidth == messageContainerMaxWidth
+        && attributes.isBubbleView == isBubbleView
         && attributes.messageContainerPadding == messageContainerPadding
         && attributes.messageLabelFont == messageLabelFont
         && attributes.messageLabelInsets == messageLabelInsets
@@ -92,6 +96,8 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
   public var avatarLeadingTrailingPadding: CGFloat = 0
 
   public var messageContainerSize: CGSize = .zero
+  public var messageContainerMaxWidth = 0.0
+  public var isBubbleView = false
   public var messageContainerPadding: UIEdgeInsets = .zero
   public var messageLabelFont = UIFont.preferredFont(forTextStyle: .body)
   public var messageLabelInsets: UIEdgeInsets = .zero
