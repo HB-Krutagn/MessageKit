@@ -34,12 +34,12 @@ open class MessagesViewController: UIViewController, UICollectionViewDelegateFlo
     removeMenuControllerObservers()
     clearMemoryCache()
   }
-
+public static var share = MessagesViewController()
   // MARK: Open
 
   /// The `MessagesCollectionView` managed by the messages view controller object.
   open var messagesCollectionView = MessagesCollectionView()
-
+  public var attributesCache: [IndexPath: MessagesCollectionViewLayoutAttributes] = [:]
   /// The `InputBarAccessoryView` used as the `inputAccessoryView` in the view controller.
   open lazy var messageInputBar = InputBarAccessoryView()
 
@@ -84,7 +84,9 @@ open class MessagesViewController: UIViewController, UICollectionViewDelegateFlo
     super.viewSafeAreaInsetsDidChange()
     updateMessageCollectionViewBottomInset()
   }
-
+    open func clearCache(){
+        attributesCache.removeAll()
+    }
   // MARK: - UICollectionViewDataSource
 
   open func numberOfSections(in collectionView: UICollectionView) -> Int {
