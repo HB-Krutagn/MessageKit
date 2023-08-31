@@ -42,36 +42,69 @@ open class MessageSizeCalculator: CellSizeCalculator {
     let dataSource = messagesLayout.messagesDataSource
     let indexPath = attributes.indexPath
     let message = dataSource.messageForItem(at: indexPath, in: messagesLayout.messagesCollectionView)
+          if let cachedAttributes = MessagesViewController.share.attributesCache[indexPath]{
+          attributes.avatarSize = cachedAttributes.avatarSize
+          attributes.avatarPosition =  cachedAttributes.avatarPosition
+          attributes.avatarLeadingTrailingPadding = cachedAttributes.avatarLeadingTrailingPadding
 
-    attributes.avatarSize = avatarSize(for: message, at: indexPath)
-    attributes.avatarPosition = avatarPosition(for: message)
-    attributes.avatarLeadingTrailingPadding = avatarLeadingTrailingPadding
+          attributes.messageContainerPadding =  cachedAttributes.messageContainerPadding
+          attributes.messageContainerSize = cachedAttributes.messageContainerSize
+            switch message.kind{
+            case .text(let text):
+                attributes.messageContainerMaxWidth = cachedAttributes.messageContainerMaxWidth
+            default:
+                attributes.messageContainerMaxWidth = 0.0
+            }
+          attributes.isBubbleView =  cachedAttributes.isBubbleView
+          attributes.cellTopLabelSize =  cachedAttributes.cellTopLabelSize
+          attributes.cellTopLabelAlignment =  cachedAttributes.cellTopLabelAlignment
+          attributes.cellBottomLabelSize =  cachedAttributes.cellBottomLabelSize
+          attributes.messageTimeLabelSize = cachedAttributes.messageTimeLabelSize
+          attributes.cellBottomLabelAlignment =  cachedAttributes.cellBottomLabelAlignment
+          attributes.messageTopLabelSize = cachedAttributes.messageTopLabelSize
+          attributes.messageTopLabelAlignment = cachedAttributes.messageTopLabelAlignment
+          attributes.cellBottomLabelAlignment = cachedAttributes.cellBottomLabelAlignment
+          // messageTopLabelAlignment(for: message, at: indexPath)
 
-    attributes.messageContainerPadding = messageContainerPadding(for: message)
-    attributes.messageContainerSize = messageContainerSize(for: message, at: indexPath)
-      switch message.kind{
-      case .text(let text):
-          attributes.messageContainerMaxWidth = messageContainerMaxWidth(for: message, at: indexPath)
-      default:
-          attributes.messageContainerMaxWidth = 0.0
+          attributes.messageBottomLabelAlignment = cachedAttributes.messageBottomLabelAlignment
+          attributes.messageBottomLabelSize = cachedAttributes.messageBottomLabelSize
+
+          attributes.accessoryViewSize = cachedAttributes.accessoryViewSize
+          attributes.accessoryViewPadding = cachedAttributes.accessoryViewPadding
+          attributes.accessoryViewPosition = cachedAttributes.accessoryViewPosition
+      }else{
+          attributes.avatarSize = avatarSize(for: message, at: indexPath)
+          attributes.avatarPosition = avatarPosition(for: message)
+          attributes.avatarLeadingTrailingPadding = avatarLeadingTrailingPadding
+
+          attributes.messageContainerPadding = messageContainerPadding(for: message)
+          attributes.messageContainerSize = messageContainerSize(for: message, at: indexPath)
+            switch message.kind{
+            case .text(let text):
+                attributes.messageContainerMaxWidth = messageContainerMaxWidth(for: message, at: indexPath)
+            default:
+                attributes.messageContainerMaxWidth = 0.0
+            }
+          attributes.isBubbleView = isPreviousMessageSameSender(messagesDataSource: dataSource, at: indexPath)
+          attributes.cellTopLabelSize = cellTopLabelSize(for: message, at: indexPath)
+          attributes.cellTopLabelAlignment = cellTopLabelAlignment(for: message)
+          attributes.cellBottomLabelSize = cellBottomLabelSize(for: message, at: indexPath)
+          attributes.messageTimeLabelSize = messageTimeLabelSize(for: message, at: indexPath)
+          attributes.cellBottomLabelAlignment = cellBottomLabelAlignment(for: message)
+          attributes.messageTopLabelSize = messageTopLabelSize(for: message, at: indexPath)
+          attributes.messageTopLabelAlignment = messageTopLabelAlignment(for: message, at: indexPath)
+          attributes.cellBottomLabelAlignment = cellBottomLabelAlignment(for: message)
+          // messageTopLabelAlignment(for: message, at: indexPath)
+
+          attributes.messageBottomLabelAlignment = messageBottomLabelAlignment(for: message, at: indexPath)
+          attributes.messageBottomLabelSize = messageBottomLabelSize(for: message, at: indexPath)
+
+          attributes.accessoryViewSize = accessoryViewSize(for: message)
+          attributes.accessoryViewPadding = accessoryViewPadding(for: message)
+          attributes.accessoryViewPosition = accessoryViewPosition(for: message)
+          MessagesViewController.share.clearCache()
+          MessagesViewController.share.attributesCache[attributes.indexPath] = attributes
       }
-    attributes.isBubbleView = isPreviousMessageSameSender(messagesDataSource: dataSource, at: indexPath)
-    attributes.cellTopLabelSize = cellTopLabelSize(for: message, at: indexPath)
-    attributes.cellTopLabelAlignment = cellTopLabelAlignment(for: message)
-    attributes.cellBottomLabelSize = cellBottomLabelSize(for: message, at: indexPath)
-    attributes.messageTimeLabelSize = messageTimeLabelSize(for: message, at: indexPath)
-    attributes.cellBottomLabelAlignment = cellBottomLabelAlignment(for: message)
-    attributes.messageTopLabelSize = messageTopLabelSize(for: message, at: indexPath)
-    attributes.messageTopLabelAlignment = messageTopLabelAlignment(for: message, at: indexPath)
-    attributes.cellBottomLabelAlignment = cellBottomLabelAlignment(for: message)
-    // messageTopLabelAlignment(for: message, at: indexPath)
-
-    attributes.messageBottomLabelAlignment = messageBottomLabelAlignment(for: message, at: indexPath)
-    attributes.messageBottomLabelSize = messageBottomLabelSize(for: message, at: indexPath)
-
-    attributes.accessoryViewSize = accessoryViewSize(for: message)
-    attributes.accessoryViewPadding = accessoryViewPadding(for: message)
-    attributes.accessoryViewPosition = accessoryViewPosition(for: message)
   }
 
   open override func sizeForItem(at indexPath: IndexPath) -> CGSize {
