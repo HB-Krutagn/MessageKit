@@ -354,6 +354,7 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
   private func setupView() {
     sectionInset = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+    self.minimumLineSpacing = 7
   }
 
   private func setupObserver() {
