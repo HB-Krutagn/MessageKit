@@ -90,9 +90,12 @@ open class TextMessageSizeCalculator: MessageSizeCalculator {
 
   // MARK: Public
 
-  public var incomingMessageLabelInsets = UIEdgeInsets(top: 7, left: 18, bottom: 7, right: 14)
-  public var outgoingMessageLabelInsets = UIEdgeInsets(top: 7, left: 14, bottom: 7, right: 18)
+  // public var incomingMessageLabelInsets = UIEdgeInsets(top: 7, left: 18, bottom: 7, right: 14)
+  // public var outgoingMessageLabelInsets = UIEdgeInsets(top: 7, left: 14, bottom: 7, right: 18)
 
+  public var incomingMessageLabelInsets = UIEdgeInsets(top: 7, left: 12, bottom: 7, right: 14)
+  public var outgoingMessageLabelInsets = UIEdgeInsets(top: 7, left: 12, bottom: 7, right: 14)
+  
   public var messageLabelFont = UIFont.preferredFont(forTextStyle: .body)
 
   // MARK: Internal
