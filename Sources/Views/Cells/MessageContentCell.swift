@@ -108,14 +108,14 @@ open class MessageContentCell: MessageCollectionViewCell {
         return containerView
     }()
     
-//    open var bubbleView = UIView()
+    //    open var bubbleView = UIView()
     open func setupSubviews() {
         
         bubbleView.addSubviews(messageTopLabel)
         bubbleView.addSubviews(messageContainerView)
         bubbleView.addSubviews(cellBottomLabel)
         bubbleView.addSubviews(avatarView)
-       
+        
         contentView.addSubview(bubbleView)
         
         contentView.addSubviews(
@@ -152,6 +152,8 @@ open class MessageContentCell: MessageCollectionViewCell {
         layoutAccessoryView(with: attributes)
         layoutTimeLabelView(with: attributes)
         attributes.accessoryViewPadding
+        attributes.indexPath
+        
     }
     
     /// Used to configure the cell.
@@ -169,7 +171,6 @@ open class MessageContentCell: MessageCollectionViewCell {
         }
         delegate = messagesCollectionView.messageCellDelegate
         delegateProgress = messagesCollectionView.messageProgressDelegate
-        
         let messageColor = displayDelegate.backgroundColor(for: message, at: indexPath, in: messagesCollectionView)
         let messageStyle = displayDelegate.messageStyle(for: message, at: indexPath, in: messagesCollectionView)
         
@@ -177,9 +178,9 @@ open class MessageContentCell: MessageCollectionViewCell {
         
         displayDelegate.configureAccessoryView(accessoryView, for: message, at: indexPath, in: messagesCollectionView)
         bubbleView.style = messageStyle
-       
-       
-      
+        
+        
+        
         let topCellLabelText = dataSource.cellTopLabelAttributedText(for: message, at: indexPath)
         let bottomCellLabelText = dataSource.cellBottomLabelAttributedText(for: message, at: indexPath)
         let topMessageLabelText = dataSource.messageTopLabelAttributedText(for: message, at: indexPath)
@@ -197,7 +198,7 @@ open class MessageContentCell: MessageCollectionViewCell {
     /// Handle tap gesture on contentView and its subviews.
     open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
         let touchLocation = gesture.location(in: bubbleView)
-//        let touchLocation = gesture.location(in: self)
+        //        let touchLocation = gesture.location(in: self)
         switch true {
         case cellBottomLabel.frame.contains(touchLocation):
             delegate?.didTapCellBottomLabel(in: self)
@@ -299,7 +300,9 @@ open class MessageContentCell: MessageCollectionViewCell {
         if attributes.messageContainerSize.width < maxWidth {
             if (maxWidth - attributes.messageContainerSize.width) > attributes.cellBottomLabelSize.width {
                 size.width = attributes.messageContainerSize.width + attributes.cellBottomLabelSize.width - 10
-                size.height -= 15
+                if size.height > 35{
+                    size.height -= 15
+                }
             }
         }
         
@@ -317,18 +320,20 @@ open class MessageContentCell: MessageCollectionViewCell {
                     .messageContainerPadding.right - avatarPadding)
             }else{
                 origin.x = (attributes.frame.width - attributes.avatarSize.width - size.width - attributes
-                    .messageContainerPadding.right - avatarPadding - 5)
+                    .messageContainerPadding.right - avatarPadding - 5 )
             }
-           
+            
         case .natural:
             fatalError(MessageKitError.avatarPositionUnresolved)
         }
-       
+        if !attributes.isBubbleView && attributes.messageContainerMaxWidth != 0.0 {
+            size.width += 5
+        }
         bubbleView.frame = CGRect(origin: origin, size:size)
     }
     open func layoutMessageContainerView(with attributes: MessagesCollectionViewLayoutAttributes) {
         var origin: CGPoint = .zero
-        
+        var origin1: CGPoint = .zero
         switch attributes.avatarPosition.vertical {
         case .messageBottom:
             origin.y = attributes.size.height - attributes.messageContainerPadding.bottom - attributes.cellBottomLabelSize
@@ -354,19 +359,26 @@ open class MessageContentCell: MessageCollectionViewCell {
         switch attributes.avatarPosition.horizontal {
         case .cellLeading:
             origin.x = attributes.avatarSize.width + attributes.messageContainerPadding.left + avatarPadding
+            
+            if !attributes.isBubbleView && attributes.messageContainerMaxWidth != 0.0{
+                origin1.x += 5
+            }
         case .cellTrailing:
             origin.x = attributes.frame.width - attributes.avatarSize.width - attributes.messageContainerSize.width - attributes
                 .messageContainerPadding.right - avatarPadding
+            if !attributes.isBubbleView && attributes.messageContainerMaxWidth != 0.0{
+                //  origin1.x -= 5
+            }
         case .natural:
             fatalError(MessageKitError.avatarPositionUnresolved)
         }
-        var origin1: CGPoint = .zero
+        
         origin1.y = attributes.messageTopLabelSize.height + attributes.messageContainerPadding.top + 2.5
         
         let MaxWidth = max(attributes.messageContainerSize.width,
                            attributes.cellBottomLabelSize.width,
                            attributes.messageTopLabelSize.width)
-            
+        
         var size = attributes.messageContainerSize
         let maxWidth = attributes.messageContainerMaxWidth
         size.width = MaxWidth
@@ -374,6 +386,13 @@ open class MessageContentCell: MessageCollectionViewCell {
             if (maxWidth - attributes.messageContainerSize.width) > attributes.cellBottomLabelSize.width {
                 size.width = attributes.messageContainerSize.width + attributes.cellBottomLabelSize.width - 10
             }
+        }
+        //        if origin1.x != 0{
+        //            size.width += 5
+        //        }
+        if size.height < 35{
+            size.height = 35
+            attributes.messageContainerSize.height = 35
         }
         messageContainerView.frame = CGRect(origin: origin1, size: size)
     }
@@ -401,11 +420,19 @@ open class MessageContentCell: MessageCollectionViewCell {
             }
         }
         
-        let origin = CGPoint(x: 0, y: y)
-    
+        var origin = CGPoint(x: 0, y: y)
+        if !attributes.isBubbleView{
+            switch attributes.avatarPosition.horizontal {
+            case .cellTrailing:
+                origin.x -= 5
+            default:
+                origin.x = 0
+            }
+            
+        }
         var size  = attributes.cellBottomLabelSize
         size.width = bubbleView.frame.width
-//        let origin = CGPoint(x: bubbleView.frame.minX, y: y)
+        //        let origin = CGPoint(x: bubbleView.frame.minX, y: y)
         cellBottomLabel.frame = CGRect(origin: origin, size: size)
     }
     
@@ -416,11 +443,20 @@ open class MessageContentCell: MessageCollectionViewCell {
         messageTopLabel.textInsets = attributes.messageTopLabelAlignment.textInsets
         
         let y = bubbleView.frame.minY - attributes.messageContainerPadding.top - (attributes.cellTopLabelSize.height) + 5
-        let origin = CGPoint(x: 0, y: y)
+        var origin = CGPoint(x: 0, y: y)
+        
+        if !attributes.isBubbleView{
+            switch attributes.avatarPosition.horizontal {
+            case .cellLeading:
+                origin.x += 5
+            default:
+                origin.x = 0
+            }
+        }
         print(attributes.messageTopLabelSize)
         messageTopLabel.frame = CGRect(origin: origin, size: attributes.messageTopLabelSize)
-//        messageTopLabel.backgroundColor = .green
-      
+        //        messageTopLabel.backgroundColor = .green
+        
     }
     
     /// Positions the message bubble's bottom label.
