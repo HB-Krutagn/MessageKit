@@ -20,80 +20,80 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Combine
-import Foundation
-import HBInputBarAccessoryView
-import UIKit
+// import Combine
+// import Foundation
+// import HBInputBarAccessoryView
+// import UIKit
 
-extension MessagesViewController {
-  final class State {
-    /// Pan gesture for display the date of message by swiping left.
-    var panGesture: UIPanGestureRecognizer?
-    var maintainPositionOnInputBarHeightChanged = false
-    var scrollsToLastItemOnKeyboardBeginsEditing = false
+// extension MessagesViewController {
+//   final class State {
+//     /// Pan gesture for display the date of message by swiping left.
+//     var panGesture: UIPanGestureRecognizer?
+//     var maintainPositionOnInputBarHeightChanged = false
+//     var scrollsToLastItemOnKeyboardBeginsEditing = false
 
-    let inputContainerView: MessagesInputContainerView = .init()
-    @Published var inputBarType: MessageInputBarKind = .messageInputBar
-    let keyboardManager = KeyboardManager()
-    var disposeBag: Set<AnyCancellable> = .init()
-  }
+//     let inputContainerView: MessagesInputContainerView = .init()
+//     @Published var inputBarType: MessageInputBarKind = .messageInputBar
+//     let keyboardManager = KeyboardManager()
+//     var disposeBag: Set<AnyCancellable> = .init()
+//   }
 
-  // MARK: - Getters
+//   // MARK: - Getters
 
-  var keyboardManager: KeyboardManager { state.keyboardManager }
+//   var keyboardManager: KeyboardManager { state.keyboardManager }
 
-  var panGesture: UIPanGestureRecognizer? {
-    get { state.panGesture }
-    set { state.panGesture = newValue }
-  }
+//   var panGesture: UIPanGestureRecognizer? {
+//     get { state.panGesture }
+//     set { state.panGesture = newValue }
+//   }
 
-  var disposeBag: Set<AnyCancellable> {
-    get { state.disposeBag }
-    set { state.disposeBag = newValue }
-  }
-}
+//   var disposeBag: Set<AnyCancellable> {
+//     get { state.disposeBag }
+//     set { state.disposeBag = newValue }
+//   }
+// }
 
-extension MessagesViewController {
-  /// Container holding `messageInputBar` view. To change type of input bar, set `inputBarType` to desired kind.
-  public var inputContainerView: MessagesInputContainerView { state.inputContainerView }
+// extension MessagesViewController {
+//   /// Container holding `messageInputBar` view. To change type of input bar, set `inputBarType` to desired kind.
+//   public var inputContainerView: MessagesInputContainerView { state.inputContainerView }
 
-  /// Kind of `messageInputBar` to be added into `inputContainerView`
-  public var inputBarType: MessageInputBarKind {
-    get { state.inputBarType }
-    set { state.inputBarType = newValue }
-  }
+//   /// Kind of `messageInputBar` to be added into `inputContainerView`
+//   public var inputBarType: MessageInputBarKind {
+//     get { state.inputBarType }
+//     set { state.inputBarType = newValue }
+//   }
 
-  /// A Boolean value that determines whether the `MessagesCollectionView`
-  /// maintains it's current position when the height of the `MessageInputBar` changes.
-  ///
-  /// The default value of this property is `false`.
-  @available(
-    *,
-    deprecated,
-    renamed: "maintainPositionOnInputBarHeightChanged",
-    message: "Please use new property - maintainPositionOnInputBarHeightChanged")
-  public var maintainPositionOnKeyboardFrameChanged: Bool {
-    get { state.maintainPositionOnInputBarHeightChanged }
-    set { state.maintainPositionOnInputBarHeightChanged = newValue }
-  }
+//   /// A Boolean value that determines whether the `MessagesCollectionView`
+//   /// maintains it's current position when the height of the `MessageInputBar` changes.
+//   ///
+//   /// The default value of this property is `false`.
+//   @available(
+//     *,
+//     deprecated,
+//     renamed: "maintainPositionOnInputBarHeightChanged",
+//     message: "Please use new property - maintainPositionOnInputBarHeightChanged")
+//   public var maintainPositionOnKeyboardFrameChanged: Bool {
+//     get { state.maintainPositionOnInputBarHeightChanged }
+//     set { state.maintainPositionOnInputBarHeightChanged = newValue }
+//   }
 
-  /// A Boolean value that determines whether the `MessagesCollectionView`
-  /// maintains it's current position when the height of the `MessageInputBar` changes.
-  ///
-  /// The default value of this property is `false` and the `MessagesCollectionView` will scroll to bottom after the
-  /// height of the `MessageInputBar` changes.
-  public var maintainPositionOnInputBarHeightChanged: Bool {
-    get { state.maintainPositionOnInputBarHeightChanged }
-    set { state.maintainPositionOnInputBarHeightChanged = newValue }
-  }
+//   /// A Boolean value that determines whether the `MessagesCollectionView`
+//   /// maintains it's current position when the height of the `MessageInputBar` changes.
+//   ///
+//   /// The default value of this property is `false` and the `MessagesCollectionView` will scroll to bottom after the
+//   /// height of the `MessageInputBar` changes.
+//   public var maintainPositionOnInputBarHeightChanged: Bool {
+//     get { state.maintainPositionOnInputBarHeightChanged }
+//     set { state.maintainPositionOnInputBarHeightChanged = newValue }
+//   }
 
-  /// A Boolean value that determines whether the `MessagesCollectionView` scrolls to the
-  /// last item whenever the `InputTextView` begins editing.
-  ///
-  /// The default value of this property is `false`.
-  /// NOTE: This is related to `scrollToLastItem` whereas the below flag is related to `scrollToBottom` - check each function for differences
-  public var scrollsToLastItemOnKeyboardBeginsEditing: Bool {
-    get { state.scrollsToLastItemOnKeyboardBeginsEditing }
-    set { state.scrollsToLastItemOnKeyboardBeginsEditing = newValue }
-  }
-}
+//   /// A Boolean value that determines whether the `MessagesCollectionView` scrolls to the
+//   /// last item whenever the `InputTextView` begins editing.
+//   ///
+//   /// The default value of this property is `false`.
+//   /// NOTE: This is related to `scrollToLastItem` whereas the below flag is related to `scrollToBottom` - check each function for differences
+//   public var scrollsToLastItemOnKeyboardBeginsEditing: Bool {
+//     get { state.scrollsToLastItemOnKeyboardBeginsEditing }
+//     set { state.scrollsToLastItemOnKeyboardBeginsEditing = newValue }
+//   }
+// }
