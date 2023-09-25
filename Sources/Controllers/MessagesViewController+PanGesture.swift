@@ -20,78 +20,78 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
-import UIKit
+// import Foundation
+// import UIKit
 
-extension MessagesViewController {
-  // MARK: Internal
+// extension MessagesViewController {
+//   // MARK: Internal
 
-  /// Display time of message by swiping the cell
-  func addPanGesture() {
-    panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
-    guard let panGesture = panGesture else {
-      return
-    }
-    panGesture.delegate = self
-    messagesCollectionView.addGestureRecognizer(panGesture)
-    messagesCollectionView.clipsToBounds = false
-  }
+//   /// Display time of message by swiping the cell
+//   func addPanGesture() {
+//     panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+//     guard let panGesture = panGesture else {
+//       return
+//     }
+//     panGesture.delegate = self
+//     messagesCollectionView.addGestureRecognizer(panGesture)
+//     messagesCollectionView.clipsToBounds = false
+//   }
 
-  func removePanGesture() {
-    guard let panGesture = panGesture else {
-      return
-    }
-    panGesture.delegate = nil
-    self.panGesture = nil
-    messagesCollectionView.removeGestureRecognizer(panGesture)
-    messagesCollectionView.clipsToBounds = true
-  }
+//   func removePanGesture() {
+//     guard let panGesture = panGesture else {
+//       return
+//     }
+//     panGesture.delegate = nil
+//     self.panGesture = nil
+//     messagesCollectionView.removeGestureRecognizer(panGesture)
+//     messagesCollectionView.clipsToBounds = true
+//   }
 
-  // MARK: Private
+//   // MARK: Private
 
-  @objc
-  private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
-    guard let parentView = gesture.view else {
-      return
-    }
+//   @objc
+//   private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+//     guard let parentView = gesture.view else {
+//       return
+//     }
 
-    switch gesture.state {
-    case .began, .changed:
-      messagesCollectionView.showsVerticalScrollIndicator = false
-      let translation = gesture.translation(in: view)
-      let minX = -(view.frame.size.width * 0.35)
-      let maxX: CGFloat = 0
-      var offsetValue = translation.x
-      offsetValue = max(offsetValue, minX)
-      offsetValue = min(offsetValue, maxX)
-      parentView.frame.origin.x = offsetValue
-    case .ended:
-      messagesCollectionView.showsVerticalScrollIndicator = true
-      UIView.animate(
-        withDuration: 0.5,
-        delay: 0,
-        usingSpringWithDamping: 0.7,
-        initialSpringVelocity: 0.8,
-        options: .curveEaseOut,
-        animations: {
-          parentView.frame.origin.x = 0
-        },
-        completion: nil)
-    default:
-      break
-    }
-  }
-}
+//     switch gesture.state {
+//     case .began, .changed:
+//       messagesCollectionView.showsVerticalScrollIndicator = false
+//       let translation = gesture.translation(in: view)
+//       let minX = -(view.frame.size.width * 0.35)
+//       let maxX: CGFloat = 0
+//       var offsetValue = translation.x
+//       offsetValue = max(offsetValue, minX)
+//       offsetValue = min(offsetValue, maxX)
+//       parentView.frame.origin.x = offsetValue
+//     case .ended:
+//       messagesCollectionView.showsVerticalScrollIndicator = true
+//       UIView.animate(
+//         withDuration: 0.5,
+//         delay: 0,
+//         usingSpringWithDamping: 0.7,
+//         initialSpringVelocity: 0.8,
+//         options: .curveEaseOut,
+//         animations: {
+//           parentView.frame.origin.x = 0
+//         },
+//         completion: nil)
+//     default:
+//       break
+//     }
+//   }
+// }
 
-// MARK: - MessagesViewController + UIGestureRecognizerDelegate
+// // MARK: - MessagesViewController + UIGestureRecognizerDelegate
 
-extension MessagesViewController: UIGestureRecognizerDelegate {
-  /// Check Pan Gesture Direction:
-  open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-    guard let panGesture = gestureRecognizer as? UIPanGestureRecognizer else {
-      return false
-    }
-    let velocity = panGesture.velocity(in: messagesCollectionView)
-    return abs(velocity.x) > abs(velocity.y)
-  }
-}
+// extension MessagesViewController: UIGestureRecognizerDelegate {
+//   /// Check Pan Gesture Direction:
+//   open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//     guard let panGesture = gestureRecognizer as? UIPanGestureRecognizer else {
+//       return false
+//     }
+//     let velocity = panGesture.velocity(in: messagesCollectionView)
+//     return abs(velocity.x) > abs(velocity.y)
+//   }
+// }
