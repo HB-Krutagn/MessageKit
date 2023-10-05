@@ -7,8 +7,8 @@
 
 import UIKit
 import Foundation
-open class SystemMessageCell: UICollectionViewCell {
-    
+open class SystemMessageCell: MessageContentCell {
+    @IBOutlet weak var lblDate: UILabel!
     @IBOutlet weak var lblMessage: PaddingLabel!
     
     open override func awakeFromNib() {
@@ -18,11 +18,21 @@ open class SystemMessageCell: UICollectionViewCell {
         lblMessage.clipsToBounds = true
     }
     
-    open func configure(with message: MessageType, at indexPath: IndexPath, and messagesCollectionView: MessagesCollectionView) {
+    open override func configure(with message: MessageType, at indexPath: IndexPath, and messagesCollectionView: MessagesCollectionView) {
         switch message.kind {
         case .systemMessage(let data):
             if let systemMessage = data as? String {
                 lblMessage.text = systemMessage
+                lblDate.isHidden = true
+                if indexPath.row == 0{
+                    lblDate.isHidden = false
+                    lblDate.attributedText = NSAttributedString(
+                        string: message.sentDate.chatDate() ?? "",
+                        attributes: [
+                            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .bold),
+                            NSAttributedString.Key.foregroundColor: UIColor.darkGray,
+                        ])
+                }
             } else if let systemMessage = data as? NSAttributedString {
                 lblMessage.attributedText = systemMessage
             } else {
@@ -31,5 +41,12 @@ open class SystemMessageCell: UICollectionViewCell {
         default:
             break
         }
+    }
+}
+extension Date{
+    func chatDate() -> String? {
+        let formatter = DateFormatter.init()
+        formatter.dateFormat = "dd MMM yyyy"
+        return "  " + formatter.string(from: self) + "  "
     }
 }
