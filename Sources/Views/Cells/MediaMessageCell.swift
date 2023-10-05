@@ -92,6 +92,13 @@ open class MediaMessageCell: MessageContentCell {
             messageProgressView.indicatorTrackEnabled = progressIndicatorTrackEnabled
         }
     }
+   
+    open override weak var delegate: MessageCellDelegate? {
+      didSet {
+        captionLabel.delegate = delegate
+      }
+    }
+
 
     // MARK: - Methods
     
@@ -164,14 +171,21 @@ open class MediaMessageCell: MessageContentCell {
         with message: MessageType,
         at indexPath: IndexPath,
         and messagesCollectionView: MessagesCollectionView) {
-        super.configure(with: message, at: indexPath, and: messagesCollectionView)
-        guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
-            fatalError(MessageKitError.nilMessagesDisplayDelegate)
-        }
+            super.configure(with: message, at: indexPath, and: messagesCollectionView)
+            guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
+                fatalError(MessageKitError.nilMessagesDisplayDelegate)
+            }
             
+            let enabledDetectors = displayDelegate.enabledDetectors(for: message, at: indexPath, in: messagesCollectionView)
             guard let dataSource = messagesCollectionView.messagesDataSource else {
                 fatalError("MessageKitError.nilMessagesDataSource")
             }
+            captionLabel.configure {
+              captionLabel.enabledDetectors = enabledDetectors
+              for detector in enabledDetectors {
+                let attributes = displayDelegate.detectorAttributes(for: detector, and: message, at: indexPath)
+                captionLabel.setAttributes(attributes, detector: detector)
+              }
             let isCurrentUser = dataSource.isFromCurrentSender(message: message)
             switch self.bubbleView.style {
             case .bubbleTail:
@@ -186,19 +200,20 @@ open class MediaMessageCell: MessageContentCell {
                 viewRight.isHidden = true
                 viewLeft.isHidden = true
             }
-        switch message.kind {
-        case .photo(let mediaItem):
-            imageView.image = mediaItem.image ?? mediaItem.placeholderImage
-            playButtonView.isHidden = true
-            progressPercentage = mediaItem.mediaProgress
-            captionLabel.text = mediaItem.text
-        case .video(let mediaItem):
-            imageView.image = mediaItem.image ?? mediaItem.placeholderImage
-            playButtonView.isHidden = false
-            progressPercentage = mediaItem.mediaProgress
-            captionLabel.text = mediaItem.text
-        default:
-            break
+            switch message.kind {
+            case .photo(let mediaItem):
+                imageView.image = mediaItem.image ?? mediaItem.placeholderImage
+                playButtonView.isHidden = true
+                progressPercentage = mediaItem.mediaProgress
+                captionLabel.text = mediaItem.text
+            case .video(let mediaItem):
+                imageView.image = mediaItem.image ?? mediaItem.placeholderImage
+                playButtonView.isHidden = false
+                progressPercentage = mediaItem.mediaProgress
+                captionLabel.text = mediaItem.text
+            default:
+                break
+            }
         }
         displayDelegate.configureMediaMessageImageView(imageView, for: message, at: indexPath, in: messagesCollectionView)
     }
@@ -228,7 +243,9 @@ open class MediaMessageCell: MessageContentCell {
             delegate?.didTapImage(in: self)
         }
     }
-    
+    open override func cellContentView(canHandle touchPoint: CGPoint) -> Bool {
+        captionLabel.handleGesture(touchPoint)
+    }
    private func setProgress(progress: Float?) {
         guard let currentProgress = progress else {
             messageProgressView.isHidden = true
