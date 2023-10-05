@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,39 +22,54 @@
                 <rect key="frame" x="0.0" y="0.0" width="255" height="40"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TGd-HF-GPD">
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ik6-zq-xsU">
                         <rect key="frame" x="0.0" y="0.0" width="255" height="40"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QTConnect" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNM-f2-Jke" customClass="PaddingLabel" customModule="MessageKit" customModuleProvider="target">
-                                <rect key="frame" x="89" y="5" width="77" height="30"/>
-                                <color key="backgroundColor" red="0.77647058820000003" green="0.86666666670000003" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vd1-7f-N1s">
+                                <rect key="frame" x="90" y="0.0" width="75.5" height="0.0"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="HmB-Aw-GVl"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="20" id="IuZ-KD-7YI"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SegoeUISymbol" family="Segoe UI Symbol" pointSize="15"/>
-                                <color key="textColor" red="0.36470588240000001" green="0.36470588240000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TGd-HF-GPD">
+                                <rect key="frame" x="0.0" y="0.0" width="255" height="40"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QTConnect" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNM-f2-Jke" customClass="PaddingLabel" customModule="MessageKit" customModuleProvider="target">
+                                        <rect key="frame" x="90.5" y="5" width="74.5" height="30"/>
+                                        <color key="backgroundColor" red="0.77647058820000003" green="0.86666666670000003" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="HmB-Aw-GVl"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SegoeUISymbol" family="Segoe UI Symbol" pointSize="15"/>
+                                        <color key="textColor" red="0.36470588240000001" green="0.36470588240000001" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="wNM-f2-Jke" secondAttribute="bottom" constant="5" id="KVx-I7-nPI"/>
+                                    <constraint firstItem="wNM-f2-Jke" firstAttribute="centerX" secondItem="TGd-HF-GPD" secondAttribute="centerX" id="p8V-rQ-kYZ"/>
+                                    <constraint firstItem="wNM-f2-Jke" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TGd-HF-GPD" secondAttribute="leading" constant="20" id="rix-Wa-9jn"/>
+                                    <constraint firstItem="wNM-f2-Jke" firstAttribute="top" secondItem="TGd-HF-GPD" secondAttribute="top" constant="5" id="wfa-Bb-8lk"/>
+                                </constraints>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="wNM-f2-Jke" secondAttribute="bottom" constant="5" id="KVx-I7-nPI"/>
-                            <constraint firstItem="wNM-f2-Jke" firstAttribute="centerX" secondItem="TGd-HF-GPD" secondAttribute="centerX" id="p8V-rQ-kYZ"/>
-                            <constraint firstItem="wNM-f2-Jke" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TGd-HF-GPD" secondAttribute="leading" constant="20" id="rix-Wa-9jn"/>
-                            <constraint firstItem="wNM-f2-Jke" firstAttribute="top" secondItem="TGd-HF-GPD" secondAttribute="top" constant="5" id="wfa-Bb-8lk"/>
-                        </constraints>
-                    </view>
+                    </stackView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="TGd-HF-GPD" secondAttribute="bottom" id="0t4-pr-cN3"/>
-                <constraint firstItem="TGd-HF-GPD" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="5dC-ll-SLK"/>
-                <constraint firstAttribute="trailing" secondItem="TGd-HF-GPD" secondAttribute="trailing" id="5mG-1h-Ddq"/>
-                <constraint firstItem="TGd-HF-GPD" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Ldg-3G-7eg"/>
+                <constraint firstAttribute="bottom" secondItem="Ik6-zq-xsU" secondAttribute="bottom" id="1l6-Wr-fWo"/>
+                <constraint firstAttribute="trailing" secondItem="Ik6-zq-xsU" secondAttribute="trailing" id="fjD-Br-Hsy"/>
+                <constraint firstItem="Ik6-zq-xsU" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="jUO-4b-UpU"/>
+                <constraint firstItem="Ik6-zq-xsU" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="q3j-e1-BPP"/>
             </constraints>
             <size key="customSize" width="255" height="50"/>
             <connections>
+                <outlet property="lblDate" destination="Vd1-7f-N1s" id="423-9i-xol"/>
                 <outlet property="lblMessage" destination="wNM-f2-Jke" id="36W-Ug-zJo"/>
             </connections>
             <point key="canvasLocation" x="286.23188405797106" y="63.616071428571423"/>
@@ -62,7 +77,7 @@
     </objects>
     <designables>
         <designable name="wNM-f2-Jke">
-            <size key="intrinsicContentSize" width="77" height="17.5"/>
+            <size key="intrinsicContentSize" width="74.5" height="20"/>
         </designable>
     </designables>
 </document>
