@@ -153,7 +153,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         layoutTimeLabelView(with: attributes)
         attributes.accessoryViewPadding
         attributes.indexPath
-        
+        attributes.messageTopLabelSize
     }
     
     /// Used to configure the cell.
@@ -329,6 +329,9 @@ open class MessageContentCell: MessageCollectionViewCell {
         if !attributes.isBubbleView && attributes.messageContainerMaxWidth != 0.0 {
             size.width += 5
         }
+        if size.width <= attributes.messageTopLabelSize.width {
+            size.width = attributes.messageTopLabelSize.width + 10
+        }
         bubbleView.frame = CGRect(origin: origin, size:size)
     }
     open func layoutMessageContainerView(with attributes: MessagesCollectionViewLayoutAttributes) {
@@ -393,6 +396,9 @@ open class MessageContentCell: MessageCollectionViewCell {
         if size.height < 35{
             size.height = 35
             attributes.messageContainerSize.height = 35
+        }
+        if size.width <= attributes.messageTopLabelSize.width {
+            size.width = attributes.messageTopLabelSize.width + 10
         }
         messageContainerView.frame = CGRect(origin: origin1, size: size)
     }
