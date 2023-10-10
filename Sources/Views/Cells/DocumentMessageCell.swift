@@ -110,7 +110,7 @@ open class DocumentMessageCell: MessageContentCell {
         nameLabel.constraint(equalTo: CGSize(width: 150, height: 50))
         nameLabel.addConstraints(innerView.topAnchor,left: pictureView.rightAnchor,bottom: sizeLabel.topAnchor,right: innerView.rightAnchor,topConstant: 8, leftConstant: 5, rightConstant: 5)
         
-        sizeLabel.addConstraints(nameLabel.bottomAnchor,left: pictureView.rightAnchor, bottom: innerView.bottomAnchor,right: innerView.rightAnchor, leftConstant: 5, bottomConstant: 8, rightConstant: 100, heightConstant: 20)
+        sizeLabel.addConstraints(nameLabel.bottomAnchor,left: pictureView.rightAnchor, bottom: innerView.bottomAnchor,right: innerView.rightAnchor, leftConstant: 5, bottomConstant: 8, rightConstant: 5, heightConstant: 20)
 
         messageProgressView.addConstraints(left: pictureView.leftAnchor, centerY: pictureView.centerYAnchor, leftConstant: -3)
         messageProgressView.constraint(equalTo: CGSize(width: 46, height: 46))
