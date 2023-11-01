@@ -243,7 +243,8 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
     }
 
     private func setupConstraints() {
-         let topH = CGFloat(UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0) + CGFloat(navigationController?.navigationBar.frame.size.height ?? 0)
+         let serchBarH = navigationController?.navigationBar.topItem?.searchController?.searchBar.frame.height ?? 0.0
+         let topH = CGFloat(UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0) + CGFloat(navigationController?.navigationBar.frame.size.height ?? 0) - CGFloat(serchBarH)
         
         let bottomH = (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0) + 50
     
