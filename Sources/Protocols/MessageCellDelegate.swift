@@ -171,6 +171,9 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
   func didTapReplyBottomMessage(in cell: MessageCollectionViewCell)
     
   func didTapReplyAudioPlayButton(in cell: MessageCollectionViewCell)
+    
+  func sliderValueChanged(in cell: AudioMessageCell,_ sender: UISlider)
+   
 }
 
 extension MessageCellDelegate {
@@ -189,6 +192,8 @@ extension MessageCellDelegate {
   public func didTapImage(in _: MessageCollectionViewCell) { }
 
   public func didTapPlayButton(in _: AudioMessageCell) { }
+    
+  public func sliderValueChanged(in _: AudioMessageCell,_ sender: UISlider) { }
 
   public func didStartAudio(in _: AudioMessageCell) { }
 
