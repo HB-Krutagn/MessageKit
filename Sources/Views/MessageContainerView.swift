@@ -34,6 +34,7 @@ open class MessageContainerView: UIImageView {
   open override var frame: CGRect {
     didSet {
       sizeMaskToView()
+      self.isUserInteractionEnabled = true
     }
   }
 
