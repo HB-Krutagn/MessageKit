@@ -51,7 +51,7 @@ open class AudioMessageCell: MessageContentCell {
       right: messageContainerView.rightAnchor,
       centerY: messageContainerView.centerYAnchor,
       rightConstant: 15)
-    progressView.addConstraints(
+     progressView.addConstraints(
       left: playButton.rightAnchor,
       right: durationLabel.leftAnchor,
       centerY: messageContainerView.centerYAnchor,
@@ -71,7 +71,7 @@ open class AudioMessageCell: MessageContentCell {
 
   open override func prepareForReuse() {
     super.prepareForReuse()
-    progressView.progress = 0
+    progressView.value = 0
     playButton.isSelected = false
     playButton.isHidden = false
     durationLabel.text = "00:00"
@@ -189,6 +189,7 @@ open class AudioMessageCell: MessageContentCell {
     playButton.setImage(playImage, for: .normal)
     playButton.setImage(pauseImage, for: .selected)
     playButton.backgroundColor = UIColor.blueThemeColor
+    playButton.addTarget(self, action: #selector(pressed(_ :)), for: .touchUpInside)
     playButton.layer.cornerRadius = 17.5
     return playButton
   }()
@@ -209,10 +210,15 @@ open class AudioMessageCell: MessageContentCell {
     return activityIndicatorView
   }()
 
-  public lazy var progressView: UIProgressView = {
-    let progressView = UIProgressView(progressViewStyle: .default)
-    progressView.progress = 0.0
-    progressView.tintColor = UIColor.blueThemeColor
+  public lazy var progressView: UISlider = {
+    let progressView =  UISlider()
+      progressView.value = 0.0
+      progressView.minimumValue = 0.0
+      progressView.maximumValue = 1.0
+      progressView.isContinuous = true
+      progressView.tintColor = UIColor.blueThemeColor
+      progressView.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .touchUpInside)
+      
     return progressView
   }()
     
@@ -251,7 +257,14 @@ open class AudioMessageCell: MessageContentCell {
             activityIndicatorView.indicatorTrackEnabled = progressIndicatorTrackEnabled
         }
     }
-
+     @objc func sliderValueChanged(_ sender: UISlider) {
+            let progress = sender.value
+            delegate?.sliderValueChanged(in: self, sender)
+            // Do something with the progress value
+        }
+    @objc func pressed(_ sender: UIButton) {
+        delegate?.didTapPlayButton(in: self)
+    }
         private func setProgress(progress: Float?) {
         guard let currentProgress = progress else {
             activityIndicatorView.isHidden = true
