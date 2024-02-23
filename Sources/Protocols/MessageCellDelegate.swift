@@ -172,7 +172,7 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
     
   func didTapReplyAudioPlayButton(in cell: MessageCollectionViewCell)
     
-  func sliderValueChanged(in cell: AudioMessageCell,_ sender: UISlider)
+  func sliderValueChanged(in cell: MessageCollectionViewCell,_ sender: UISlider)
    
 }
 
@@ -193,7 +193,7 @@ extension MessageCellDelegate {
 
   public func didTapPlayButton(in _: AudioMessageCell) { }
     
-  public func sliderValueChanged(in _: AudioMessageCell,_ sender: UISlider) { }
+  public func sliderValueChanged(in _: MessageCollectionViewCell,_ sender: UISlider) { }
 
   public func didStartAudio(in _: AudioMessageCell) { }
 
